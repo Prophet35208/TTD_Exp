@@ -1,0 +1,44 @@
+--- solution.py (original)
++++ solution.py (modified)
+@@ -0,0 +1,25 @@
++def calculate(notation, expression):
++    """
++    Выполняет вычисления в постфиксной или префиксной нотации.
++    
++    :param notation: Тип нотации ('postfix' или 'prefix')
++    :param expression: Строка с выражением
++    :return: Результат вычисления
++    """
++    tokens = expression.split()
++    
++    if notation == 'postfix':
++        stack = []
++        for token in tokens:
++            if token in ['+', '-']:
++                b = stack.pop()
++                a = stack.pop()
++                if token == '+':
++                    stack.append(a + b)
++                elif token == '-':
++                    stack.append(a - b)
++            else:
++                stack.append(int(token))
++        return stack[0]
++    
++    elif notation == 'prefix':
++        stack = []
++        for token in reversed(tokens):
++            if token in ['+', '-']:
++                stack.append(token)
++            else:
++                if stack and stack[-1] in ['+', '-']:
++                    op = stack.pop()
++                    b = int(token)
++                    a = int(stack.pop())
++                    if op == '+':
++                        stack.append(str(a + b))
++                    elif op == '-':
++                        stack.append(str(a - b))
++                else:
++                    stack.append(token)
++        return int(stack[0])

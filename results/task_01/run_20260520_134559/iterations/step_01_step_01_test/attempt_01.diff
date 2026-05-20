@@ -1,0 +1,37 @@
+--- /dev/null
++++ solution.py
+@@ -0,0 +1,34 @@
+ def calculate(notation, expression):
+     tokens = expression.split()
+     stack = []
+     
+     if notation == 'prefix':
+         tokens = tokens[::-1]
+         for token in tokens:
+             if token in ['+', '-']:
+                 a = stack.pop()
+                 b = stack.pop()
+                 if token == '+':
+                     res = a + b
+                 else:
+                     res = a - b
+                 stack.append(res)
+             else:
+                 stack.append(float(token))
+     elif notation == 'postfix':
+         for token in tokens:
+             if token in ['+', '-']:
+                 b = stack.pop()
+                 a = stack.pop()
+                 if token == '+':
+                     res = a + b
+                 else:
+                     res = a - b
+                 stack.append(res)
+             else:
+                 stack.append(float(token))
+     else:
+         raise ValueError("Unknown notation")
+     
+     result = stack[0]
+     return int(result) if result.is_integer() else result

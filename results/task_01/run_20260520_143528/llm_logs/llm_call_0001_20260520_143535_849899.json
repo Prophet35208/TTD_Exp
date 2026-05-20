@@ -1,0 +1,22 @@
+{
+  "call_number": 1,
+  "timestamp": "20260520_143535_849899",
+  "model": "deepseek/deepseek-v4-pro",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "system",
+      "content": "Ты — разработчик в режиме строгого Test-Driven Development.\n\nТвоя задача: получая тесты и текущий код, генерировать патч, который проходит все тесты.\n\nПравила:\n- Отвечай ТОЛЬКО содержимым unified diff патча. Без markdown-разметки, без пояснений.\n- Патч должен применяться к текущему файлу solution.py.\n- Если файл solution.py пуст, патч должен создавать весь код с нуля.\n- Текущий код solution.py, если не пустой, уже содержит реализацию предыдущих шагов TDD. Не ломай то, что уже работает. Иначе некоторые прошлые тесты могут не пройти.\n- Изменения должны быть минимальными и направленными только на прохождение новых тестов.\n- Не добавляй функциональность, не требуемую тестами.\n- Не изменяй тесты.\n- Если все тесты уже проходят, верни пустой патч."
+    },
+    {
+      "role": "user",
+      "content": "Вот текущий код solution.py:\n\n\n\nВот тесты, которые нужно пройти:\n\n\"\"\"\nStep 01: Сложение и вычитание в постфиксной и префиксной нотации.\n\"\"\"\n\nimport sys\nimport os\nfrom pathlib import Path\n\n# Добавляем путь к solution.py\nsys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))\n\nfrom solution import calculate\n\n\n# ============================================================\n# Тесты: Постфиксная нотация (сложение)\n# ============================================================\n\ndef test_postfix_addition_simple():\n    assert calculate(\"postfix\", \"3 4 +\") == 7\n\n\ndef test_postfix_addition_commutative():\n    assert calculate(\"postfix\", \"5 7 +\") == 12\n    assert calculate(\"postfix\", \"7 5 +\") == 12\n\n\ndef test_postfix_addition_with_zero():\n    assert calculate(\"postfix\", \"42 0 +\") == 42\n\n\ndef test_postfix_addition_negative():\n    assert calculate(\"postfix\", \"-3 7 +\") == 4\n\n\n# ============================================================\n# Тесты: Постфиксная нотация (вычитание)\n# ============================================================\n\ndef test_postfix_subtraction_simple():\n    assert calculate(\"postfix\", \"10 3 -\") == 7\n\n\ndef test_postfix_subtraction_non_commutative():\n    assert calculate(\"postfix\", \"10 3 -\") == 7\n    assert calculate(\"postfix\", \"3 10 -\") == -7\n\n\ndef test_postfix_subtraction_zero():\n    assert calculate(\"postfix\", \"15 0 -\") == 15\n\n\ndef test_postfix_subtraction_negative_result():\n    assert calculate(\"postfix\", \"3 7 -\") == -4\n\n\n# ============================================================\n# Тесты: Префиксная нотация (сложение)\n# ============================================================\n\ndef test_prefix_addition_simple():\n    assert calculate(\"prefix\", \"+ 3 4\") == 7\n\n\ndef test_prefix_addition_commutative():\n    assert calculate(\"prefix\", \"+ 5 7\") == 12\n    assert calculate(\"prefix\", \"+ 7 5\") == 12\n\n\ndef test_prefix_addition_with_zero():\n    assert calculate(\"prefix\", \"+ 42 0\") == 42\n\n\n# ============================================================\n# Тесты: Префиксная нотация (вычитание)\n# ============================================================\n\ndef test_prefix_subtraction_simple():\n    assert calculate(\"prefix\", \"- 10 3\") == 7\n\n\ndef test_prefix_subtraction_non_commutative():\n    assert calculate(\"prefix\", \"- 10 3\") == 7\n    assert calculate(\"prefix\", \"- 3 10\") == -7\n\n\ndef test_prefix_subtraction_negative_result():\n    assert calculate(\"prefix\", \"- 3 7\") == -4\n\nСгенерируй unified diff патч для solution.py, чтобы пройти все тесты.\n\nОтвечай только содержимым патча."
+    }
+  ],
+  "response": "--- /dev/null\n+++ b/solution.py\n@@ -0,0 +1,19 @@\n+def calculate(notation, expression):\n+    tokens = expression.split()\n+    if notation == \"postfix\":\n+        a = int(tokens[0])\n+        b = int(tokens[1])\n+        op = tokens[2]\n+        if op == \"+\":\n+            return a + b\n+        elif op == \"-\":\n+            return a - b\n+    elif notation == \"prefix\":\n+        op = tokens[0]\n+        a = int(tokens[1])\n+        b = int(tokens[2])\n+        if op == \"+\":\n+            return a + b\n+        elif op == \"-\":\n+            return a - b\n+    return None",
+  "usage": {
+    "prompt_tokens": 883,
+    "completion_tokens": 172,
+    "total_tokens": 1055
+  }
+}

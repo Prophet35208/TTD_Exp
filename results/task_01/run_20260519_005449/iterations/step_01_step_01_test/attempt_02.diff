@@ -1,0 +1,7 @@
+diff --git a/solution.py b/solution.py
+new file mode 100644
+--- /dev/null
++++ b/solution.py
+@@ -0,0 +1 @@
++def add(a, b):
++    return a + b

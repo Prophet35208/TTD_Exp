@@ -1,0 +1,34 @@
+diff --git a/solution.py b/solution.py
+new file mode 100644
+--- /dev/null
++++ b/solution.py
+@@ -0,0 +1,32 @@
++def calculate(notation, expression):
++    if notation == "postfix":
++        tokens = expression.split()
++        stack = []
++        for token in tokens:
++            if token.isdigit():
++                stack.append(int(token))
++            else:
++                b = stack.pop()
++                a = stack.pop()
++                if token == '+':
++                    stack.append(a + b)
++                elif token == '-':
++                    stack.append(a - b)
++        return stack[0]
++    elif notation == "prefix":
++        tokens = expression.split()[::-1]
++        stack = []
++        for token in tokens:
++            if token.isdigit():
++                stack.append(int(token))
++            else:
++                a = stack.pop()
++                b = stack.pop()
++                if token == '+':
++                    stack.append(a + b)
++                elif token == '-':
++                    stack.append(a - b)
++        return stack[0]

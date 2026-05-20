@@ -1,0 +1,22 @@
+{
+  "call_number": 2,
+  "timestamp": "20260520_144440_909248",
+  "model": "deepseek/deepseek-v4-pro",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "system",
+      "content": "Ты — разработчик в режиме строгого Test-Driven Development.\n\nТвоя задача: получая тесты и текущий код, генерировать патч, который проходит все тесты.\n\nПравила:\n- Отвечай ТОЛЬКО содержимым unified diff патча. Без markdown-разметки, без пояснений.\n- Патч должен применяться к текущему файлу solution.py.\n- Если файл solution.py пуст, патч должен создавать весь код с нуля.\n- Текущий код solution.py, если не пустой, уже содержит реализацию предыдущих шагов TDD. Не ломай то, что уже работает. Иначе некоторые прошлые тесты могут не пройти.\n- Изменения должны быть минимальными и направленными только на прохождение новых тестов.\n- Не добавляй функциональность, не требуемую тестами.\n- Не изменяй тесты.\n- Если все тесты уже проходят, верни пустой патч."
+    },
+    {
+      "role": "user",
+      "content": "Код solution.py проходит все тесты.\n\nТекущий код:\n\ndef calculate(notation, expression):\n    tokens = expression.split()\n    if notation == \"postfix\":\n        a = int(tokens[0])\n        b = int(tokens[1])\n        op = tokens[2]\n        if op == \"+\":\n            return a + b\n        elif op == \"-\":\n            return a - b\n    elif notation == \"prefix\":\n        op = tokens[0]\n        a = int(tokens[1])\n        b = int(tokens[2])\n        if op == \"+\":\n            return a + b\n        elif op == \"-\":\n            return a - b\n    return None\nПроведи рефакторинг кода для улучшения качества.\n\nПравила:\n- Не меняй поведение. Все тесты должны продолжать проходить.\n- Улучшай: читаемость, устранение дублирования, упрощение логики.\n- Минимальные изменения за один шаг.\n- Сгенерируй unified diff патч с твоим рефакторингом.\n- Отвечай ТОЛЬКО содержимым патча."
+    }
+  ],
+  "response": "```diff\n--- a/solution.py\n+++ b/solution.py\n@@ -1,16 +1,14 @@\n def calculate(notation, expression):\n     tokens = expression.split()\n+    if notation == \"postfix\":\n+        a, b, op = int(tokens[0]), int(tokens[1]), tokens[2]\n+    elif notation == \"prefix\":\n+        op, a, b = tokens[0], int(tokens[1]), int(tokens[2])\n+    else:\n+        return None\n+\n+    if op == \"+\":\n+        return a + b\n+    elif op == \"-\":\n+        return a - b\n-    if notation == \"postfix\":\n-        a = int(tokens[0])\n-        b = int(tokens[1])\n-        op = tokens[2]\n-        if op == \"+\":\n-            return a + b\n-        elif op == \"-\":\n-            return a - b\n-    elif notation == \"prefix\":\n-        op = tokens[0]\n-        a = int(tokens[1])\n-        b = int(tokens[2])\n-        if op == \"+\":\n-            return a + b\n-        elif op == \"-\":\n-            return a - b\n-    return None\n```",
+  "usage": {
+    "prompt_tokens": 468,
+    "completion_tokens": 278,
+    "total_tokens": 746
+  }
+}
