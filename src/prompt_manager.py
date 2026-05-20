@@ -79,20 +79,6 @@ class PromptManager:
                          current_code=current_code,
                          test_code=test_code)
 
-    def build_patch_error_prompt(self, error_output: str, current_code: str) -> str:
-        """
-        Формирует промпт для исправления ошибки формата патча.
-
-        Args:
-            error_output: текст ошибки парсинга патча
-            current_code: текущее содержимое solution.py
-
-        Returns:
-            заполненный промпт
-        """
-        return self.fill("patch_error.md",
-                         error_output=error_output,
-                         current_code=current_code)
 
     def build_error_prompt(self, error_output: str, current_code: str) -> str:
         """

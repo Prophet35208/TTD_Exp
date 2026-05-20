@@ -1,0 +1,23 @@
+```diff
+--- /dev/null
++++ b/solution.py
+@@ -0,0 +1,17 @@
++def calculate(notation, expression):
++    tokens = expression.split()
++    if notation == "postfix":
++        a = int(tokens[0])
++        b = int(tokens[1])
++        op = tokens[2]
++        if op == "+":
++            return a + b
++        elif op == "-":
++            return a - b
++    elif notation == "prefix":
++        op = tokens[0]
++        a = int(tokens[1])
++        b = int(tokens[2])
++        if op == "+":
++            return a + b
++        elif op == "-":
++            return a - b
+```

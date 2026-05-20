@@ -2,7 +2,7 @@
 Оркестратор TDD-цикла.
 
 Управляет процессом: для каждого шага TDD подаёт тесты LLM,
-применяет патчи, запускает тесты, при ошибках отправляет на перегенерацию.
+получает полный код, запускает тесты, при ошибках отправляет на перегенерацию.
 """
 
 import time
@@ -22,7 +22,6 @@ from config import (
 )
 from prompt_manager import PromptManager
 from llm_client import LLMClient
-from patch_handler import PatchHandler
 from test_runner import TestRunner
 
 
@@ -31,22 +30,31 @@ class Orchestrator:
     Управляет полным циклом TDD с LLM.
 
     Использование:
-        orch = Orchestrator(prompt_manager, llm_client, patch_handler, test_runner)
-        result = orch.run_task(task_dir)
+        orch = Orchestrator(prompt_manager, llm_client, test_runner)
+        result = orch.run_task(task_dir, step_file="step_01_test.py")
     """
 
     def __init__(
         self,
         prompt_manager: PromptManager,
         llm_client: LLMClient,
-        patch_handler: PatchHandler,
         test_runner: TestRunner,
     ):
         self.pm = prompt_manager
         self.llm = llm_client
-        self.patcher = patch_handler
         self.runner = test_runner
         self.system_prompt = self.pm.get_system_prompt()
+
+    @staticmethod
+    def _extract_code(response_text: str) -> str:
+        """Извлекает чистый код из ответа LLM (убирает markdown-обёртку)."""
+        import re
+        text = response_text.strip()
+        # Пробуем найти код внутри ```python, ```diff, или просто ```
+        match = re.search(r"```(?:python|diff)?\n(.*?)```", text, re.DOTALL)
+        if match:
+            return match.group(1).strip()
+        return text
 
     def run_task(self, task_dir: Path, step_file: str = None) -> dict:
         """
@@ -55,7 +63,7 @@ class Orchestrator:
         Args:
             task_dir: путь к папке задачи
             step_file: имя файла шага (например, "step_01_test.py"). 
-                    Если None — выполняются все шаги по порядку.
+                       Если None — выполняются все шаги по порядку.
 
         Returns:
             dict с результатами запуска
@@ -163,9 +171,24 @@ class Orchestrator:
         run_dir: Path,
         iterations_dir: Path,
     ) -> dict:
+        """
+        Выполняет один шаг TDD.
+
+        Args:
+            step_name: имя шага
+            step_idx: номер шага
+            test_file: путь к файлу с тестами
+            current_solution: путь к текущему solution.py
+            run_dir: папка результатов запуска
+            iterations_dir: папка для логов итераций
+
+        Returns:
+            dict с результатом шага
+        """
         test_code = test_file.read_text(encoding="utf-8")
         step_iterations = []
 
+        # Папка для итераций этого шага
         step_iter_dir = iterations_dir / f"step_{step_idx:02d}_{step_name}"
         step_iter_dir.mkdir(exist_ok=True)
 
@@ -175,6 +198,7 @@ class Orchestrator:
         for attempt in range(1, MAX_ITERATIONS + 1):
             print(f"\n  Попытка {attempt}/{MAX_ITERATIONS}")
 
+            # 1. Формируем промпт
             current_code = current_solution.read_text(encoding="utf-8")
 
             if attempt == 1:
@@ -185,20 +209,12 @@ class Orchestrator:
             else:
                 last_iter = step_iterations[-1]
                 last_error = last_iter.get("error_output", "Неизвестная ошибка")
-                error_type = last_iter.get("error_type", "test_failure")
+                user_prompt = self.pm.build_error_prompt(
+                    error_output=last_error,
+                    current_code=current_code,
+                )
 
-                if error_type == "patch_error":
-                    user_prompt = self.pm.build_patch_error_prompt(
-                        error_output=last_error,
-                        current_code=current_code,
-                    )
-                else:
-                    user_prompt = self.pm.build_error_prompt(
-                        error_output=last_error,
-                        current_code=current_code,
-                    )
-
-            # Отправляем запрос LLM с историей
+            # 2. Отправляем запрос LLM (с историей)
             print(f"    Запрос к LLM...")
             llm_result = self.llm.generate_patch(
                 self.system_prompt,
@@ -206,36 +222,30 @@ class Orchestrator:
                 history=messages_history,
             )
 
-            clean_patch = self.patcher.extract(llm_result["patch"])
+            # 3. Извлекаем новый код
+            new_code = self._extract_code(llm_result["text"])
 
             iter_log = {
                 "attempt": attempt,
                 "prompt_tokens": llm_result["usage"]["prompt_tokens"],
                 "completion_tokens": llm_result["usage"]["completion_tokens"],
                 "total_tokens": llm_result["usage"]["total_tokens"],
-                "patch": clean_patch,
+                "code": new_code,
             }
 
-            # Сохраняем патч
-            patch_file = step_iter_dir / f"attempt_{attempt:02d}.diff"
-            patch_file.write_text(clean_patch, encoding="utf-8")
+            # Сохраняем ответ модели
+            code_file = step_iter_dir / f"attempt_{attempt:02d}_response.py"
+            code_file.write_text(new_code, encoding="utf-8")
 
             # Добавляем текущий обмен в историю
             messages_history.append({"role": "user", "content": user_prompt})
-            messages_history.append({"role": "assistant", "content": llm_result["patch"]})
+            messages_history.append({"role": "assistant", "content": new_code})
 
-            # Применяем патч
-            try:
-                self.patcher.apply(clean_patch, current_solution)
-                print(f"    Патч применён")
-            except RuntimeError as e:
-                print(f"    Ошибка патча: {e}")
-                iter_log["error_type"] = "patch_error"
-                iter_log["error_output"] = str(e)
-                step_iterations.append(iter_log)
-                continue
+            # 4. Перезаписываем solution.py новым кодом
+            current_solution.write_text(new_code, encoding="utf-8")
+            print(f"    Код записан в solution.py")
 
-            # Запускаем тесты
+            # 5. Запускаем тесты
             print(f"    Запуск тестов...")
             test_result = self.runner.run(current_solution, test_file)
 
@@ -250,9 +260,9 @@ class Orchestrator:
                 encoding="utf-8"
             )
 
-            # Сохраняем код
-            code_file = step_iter_dir / f"attempt_{attempt:02d}_solution.py"
-            code_file.write_text(current_solution.read_text(encoding="utf-8"))
+            # Сохраняем код после этой попытки
+            solution_copy = step_iter_dir / f"attempt_{attempt:02d}_solution.py"
+            solution_copy.write_text(current_solution.read_text(encoding="utf-8"))
 
             if test_result["passed"]:
                 print(f"    ✅ Тесты пройдены!")
@@ -260,6 +270,7 @@ class Orchestrator:
                 iter_log["error_output"] = ""
                 step_iterations.append(iter_log)
 
+                # Рефакторинг (опционально)
                 if REFACTOR_ENABLED:
                     self._current_test_file = test_file
                     self._do_refactoring(current_solution, step_iter_dir, attempt)
@@ -280,6 +291,7 @@ class Orchestrator:
 
             step_iterations.append(iter_log)
 
+        # Исчерпали лимит попыток
         return {
             "step_name": step_name,
             "step_idx": step_idx,
@@ -290,70 +302,37 @@ class Orchestrator:
         }
 
     def _do_refactoring(self, solution_path: Path, step_iter_dir: Path, attempt: int):
-        """Выполняет рефакторинг с проверкой и возможностью перегенерации."""
-        MAX_REFACTOR_ATTEMPTS = 2
-        test_file = None  # Будет найден ниже
-        
-        for ref_attempt in range(1, MAX_REFACTOR_ATTEMPTS + 1):
-            print(f"    🔧 Рефакторинг (попытка {ref_attempt}/{MAX_REFACTOR_ATTEMPTS})...")
-            
-            current_code = solution_path.read_text(encoding="utf-8")
-            refactor_prompt = self.pm.build_refactoring_prompt(current_code=current_code)
-            
-            # Для повторных попыток — краткая история
-            history = []
-            if ref_attempt > 1:
-                history = [
-                    {"role": "user", "content": refactor_prompt},
-                    {"role": "assistant", "content": last_failed_patch},
-                ]
-            
-            llm_result = self.llm.generate_patch(self.system_prompt, refactor_prompt, history=history)
-            clean_patch = self.patcher.extract(llm_result["patch"])
-            
-            if not clean_patch.strip():
-                print(f"    Рефакторинг не требуется")
-                return
-            
-            # Сохраняем рефакторинг-патч
-            suffix = f"_r{ref_attempt}" if ref_attempt > 1 else ""
-            refactor_file = step_iter_dir / f"attempt_{attempt:02d}_refactor{suffix}.diff"
-            refactor_file.write_text(clean_patch, encoding="utf-8")
-            
-            # Сохраняем код ДО рефакторинга для отката
-            backup_code = current_code
-            
-            try:
-                self.patcher.apply(clean_patch, solution_path)
-                print(f"    Патч рефакторинга применён")
-            except RuntimeError as e:
-                print(f"    Ошибка патча рефакторинга: {e}")
-                last_failed_patch = clean_patch
-                continue
-            
-            # Проверяем тесты
-            # Нужно найти файл тестов — используем последний из step_iter_dir
-            # Проще: оркестратор должен передать test_file в _do_refactoring
-            # Пока пропустим проверку, если test_file не передан
-            if hasattr(self, '_current_test_file'):
-                print(f"    Проверка тестов после рефакторинга...")
-                test_result = self.runner.run(solution_path, self._current_test_file)
-                
-                if test_result["passed"]:
-                    print(f"    ✅ Тесты пройдены, рефакторинг успешен")
-                    refactored_file = step_iter_dir / f"attempt_{attempt:02d}_refactored{suffix}.py"
-                    refactored_file.write_text(solution_path.read_text(encoding="utf-8"))
-                    return
-                else:
-                    print(f"    ❌ Тесты упали после рефакторинга, откатываем")
-                    solution_path.write_text(backup_code, encoding="utf-8")
-                    last_failed_patch = clean_patch
-                    continue
+        """Выполняет рефакторинг с проверкой тестов."""
+        print(f"    🔧 Рефакторинг...")
+        current_code = solution_path.read_text(encoding="utf-8")
+        refactor_prompt = self.pm.build_refactoring_prompt(current_code=current_code)
+
+        llm_result = self.llm.generate_patch(self.system_prompt, refactor_prompt)
+        new_code = self._extract_code(llm_result["text"])
+
+        if not new_code.strip() or new_code.strip() == current_code.strip():
+            print(f"    Рефакторинг не требуется")
+            return
+
+        # Сохраняем результат рефакторинга
+        refactored_file = step_iter_dir / f"attempt_{attempt:02d}_refactored.py"
+        refactored_file.write_text(new_code, encoding="utf-8")
+
+        # Сохраняем старый код на случай отката
+        backup_code = current_code
+
+        # Применяем рефакторинг
+        solution_path.write_text(new_code, encoding="utf-8")
+
+        # Проверяем тесты
+        if hasattr(self, '_current_test_file'):
+            print(f"    Проверка тестов после рефакторинга...")
+            test_result = self.runner.run(solution_path, self._current_test_file)
+
+            if test_result["passed"]:
+                print(f"    ✅ Тесты пройдены, рефакторинг успешен")
             else:
-                # Нет тестов для проверки — просто сохраняем
-                refactored_file = step_iter_dir / f"attempt_{attempt:02d}_refactored{suffix}.py"
-                refactored_file.write_text(solution_path.read_text(encoding="utf-8"))
-                print(f"    Рефакторинг применён (без проверки тестов)")
-                return
-        
-        print(f"    ⚠️ Рефакторинг не удался за {MAX_REFACTOR_ATTEMPTS} попыток, оставляем исходный код")
+                print(f"    ❌ Тесты упали, откатываем рефакторинг")
+                solution_path.write_text(backup_code, encoding="utf-8")
+        else:
+            print(f"    Рефакторинг применён (без проверки тестов)")

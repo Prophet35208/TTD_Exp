@@ -21,7 +21,6 @@ from config import (
 )
 from prompt_manager import PromptManager
 from llm_client import LLMClient
-from patch_handler import PatchHandler
 from test_runner import TestRunner
 from orchestrator import Orchestrator
 
@@ -33,14 +32,12 @@ llm = LLMClient(
     model=LLM_MODEL,
     temperature=LLM_TEMPERATURE,
 )
-patcher = PatchHandler()
 runner = TestRunner(timeout=TEST_TIMEOUT)
 
 # 2. Создаём оркестратор
 orch = Orchestrator(
     prompt_manager=pm,
     llm_client=llm,
-    patch_handler=patcher,
     test_runner=runner,
 )
 
