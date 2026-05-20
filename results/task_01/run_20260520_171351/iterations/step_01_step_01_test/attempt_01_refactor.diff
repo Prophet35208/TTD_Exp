@@ -1,0 +1,12 @@
+--- solution.py
++++ solution.py
+@@ -1,5 +1,5 @@
+ def is_palindrome(s):
+-    s = ''.join(c.lower() for c in s if c.isalnum())
+-    if len(s) <= 1:
+-        return True
+-    return s == s[::-1]
++    cleaned = ''.join(c.lower() for c in s if c.isalnum())
++    if not cleaned:
++        return True
++    return cleaned == cleaned[::-1]

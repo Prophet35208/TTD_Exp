@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 from openai import OpenAI
+import uuid
 
 
 class LLMClient:
@@ -16,6 +17,7 @@ class LLMClient:
         self.client = OpenAI(base_url=base_url, api_key=api_key)
         self.log_dir = log_dir
         self._call_counter = 0
+        self.user_id = self._get_or_create_user_id()
 
     def _log_interaction(self, messages: list, response_text: str, usage: dict):
         """Сохраняет полный лог взаимодействия с LLM."""
@@ -50,7 +52,8 @@ class LLMClient:
             temperature=self.temperature,
             extra_body={
                 "reasoning": {"enabled": False}
-            }
+            },
+            user=self.user_id
         )
 
         usage = response.usage
@@ -74,3 +77,18 @@ class LLMClient:
         result = self.generate(system_prompt, user_prompt, history)
         result["patch"] = result["text"]
         return result
+    
+    @staticmethod
+    def _get_or_create_user_id() -> str:
+        """Генерирует или загружает уникальный ID пользователя для OpenRouter."""
+        config_dir = Path.home() / ".config" / "ttd_experiment"
+        config_dir.mkdir(parents=True, exist_ok=True)
+        id_file = config_dir / "machine_id"
+
+        if id_file.exists():
+            return id_file.read_text().strip()
+
+        # Генерируем новый ID и сохраняем в файл
+        user_id = f"ttd-user-{uuid.uuid4().hex[:16]}"
+        id_file.write_text(user_id)
+        return user_id

@@ -1,0 +1,27 @@
+STDOUT:
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.3, pluggy-1.6.0 -- D:\TTD_Exp\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Daniil\AppData\Local\Temp\tmp4wwx0wiq
+plugins: anyio-4.13.0
+collecting ... collected 14 items
+
+step_01_test.py::test_postfix_addition_simple PASSED                     [  7%]
+step_01_test.py::test_postfix_addition_commutative PASSED                [ 14%]
+step_01_test.py::test_postfix_addition_with_zero PASSED                  [ 21%]
+step_01_test.py::test_postfix_addition_negative PASSED                   [ 28%]
+step_01_test.py::test_postfix_subtraction_simple PASSED                  [ 35%]
+step_01_test.py::test_postfix_subtraction_non_commutative PASSED         [ 42%]
+step_01_test.py::test_postfix_subtraction_zero PASSED                    [ 50%]
+step_01_test.py::test_postfix_subtraction_negative_result PASSED         [ 57%]
+step_01_test.py::test_prefix_addition_simple PASSED                      [ 64%]
+step_01_test.py::test_prefix_addition_commutative PASSED                 [ 71%]
+step_01_test.py::test_prefix_addition_with_zero PASSED                   [ 78%]
+step_01_test.py::test_prefix_subtraction_simple PASSED                   [ 85%]
+step_01_test.py::test_prefix_subtraction_non_commutative PASSED          [ 92%]
+step_01_test.py::test_prefix_subtraction_negative_result PASSED          [100%]
+
+============================= 14 passed in 0.03s ==============================
+
+
+STDERR:
