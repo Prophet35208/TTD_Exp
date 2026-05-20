@@ -64,20 +64,11 @@ class PromptManager:
         """Возвращает системный промпт без подстановок."""
         return self.load("system_prompt.md")
 
-    def build_initial_prompt(self, current_code: str, test_code: str) -> str:
-        """
-        Формирует промпт для первого или очередного шага TDD.
-
-        Args:
-            current_code: текущее содержимое solution.py
-            test_code: код тестов текущего шага
-
-        Returns:
-            заполненный промпт
-        """
+    def build_initial_prompt(self, current_code: str, test_code: str, previous_test_code: str = "") -> str:
         return self.fill("initial_step.md",
-                         current_code=current_code,
-                         test_code=test_code)
+                        current_code=current_code,
+                        test_code=test_code,
+                        previous_test_code=previous_test_code)
 
 
     def build_error_prompt(self, error_output: str, current_code: str) -> str:
