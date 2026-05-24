@@ -1,0 +1,10 @@
+# TEST 8: Простой if без else
+
+>>> EXPRESSION
+int main() {
+    if (a > b)
+        x = 1;
+}
+
+<<< OUTPUT
+0

@@ -1,0 +1,158 @@
+STDOUT:
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.3, pluggy-1.6.0 -- d:\TTD_Exp\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Daniil\AppData\Local\Temp\tmpeqf89zhw
+plugins: anyio-4.13.0
+collecting ... collected 11 items
+
+all.py::test_tokenize_keywords FAILED                                    [  9%]
+all.py::test_tokenize_identifiers FAILED                                 [ 18%]
+all.py::test_tokenize_integer_constants FAILED                           [ 27%]
+all.py::test_tokenize_float_constants FAILED                             [ 36%]
+all.py::test_tokenize_operators FAILED                                   [ 45%]
+all.py::test_tokenize_braces_and_parens FAILED                           [ 54%]
+all.py::test_tokenize_simple_declaration FAILED                          [ 63%]
+all.py::test_tokenize_comment_ignored FAILED                             [ 72%]
+all.py::test_tokenize_comment_at_end FAILED                              [ 81%]
+all.py::test_tokenize_eof FAILED                                         [ 90%]
+all.py::test_tokenize_line_and_col PASSED                                [100%]
+
+================================== FAILURES ===================================
+___________________________ test_tokenize_keywords ____________________________
+all.py:8: in test_tokenize_keywords
+    assert types == ["INT", "DOUBLE", "IF", "MAIN", "RETURN"]
+E   AssertionError: assert [<TokenType.I...Type.EOF: 25>] == ['INT', 'DOUB...IN', 'RETURN']
+E     
+E     At index 0 diff: <TokenType.INT: 1> != 'INT'
+E     Left contains one more item: <TokenType.EOF: 25>
+E     
+E     Full diff:
+E       [
+E     -     'INT',...
+E     
+E     ...Full output truncated (11 lines hidden), use '-vv' to show
+__________________________ test_tokenize_identifiers __________________________
+all.py:14: in test_tokenize_identifiers
+    assert values == ["a", "b", "x", "y", "z", "temp", "result"]
+E   AssertionError: assert [] == ['a', 'b', 'x..., 'temp', ...]
+E     
+E     Right contains 7 more items, first extra item: 'a'
+E     
+E     Full diff:
+E     + []
+E     - [
+E     -     'a',...
+E     
+E     ...Full output truncated (7 lines hidden), use '-vv' to show
+_______________________ test_tokenize_integer_constants _______________________
+all.py:20: in test_tokenize_integer_constants
+    assert values == [10, 0, 100, 42]
+E   AssertionError: assert [] == [10, 0, 100, 42]
+E     
+E     Right contains 4 more items, first extra item: 10
+E     
+E     Full diff:
+E     + []
+E     - [
+E     -     10,...
+E     
+E     ...Full output truncated (4 lines hidden), use '-vv' to show
+________________________ test_tokenize_float_constants ________________________
+all.py:26: in test_tokenize_float_constants
+    assert values == [2.5, 3.14, 0.5, 1.0]
+E   AssertionError: assert [] == [2.5, 3.14, 0.5, 1.0]
+E     
+E     Right contains 4 more items, first extra item: 2.5
+E     
+E     Full diff:
+E     + []
+E     - [
+E     -     2.5,...
+E     
+E     ...Full output truncated (4 lines hidden), use '-vv' to show
+___________________________ test_tokenize_operators ___________________________
+all.py:32: in test_tokenize_operators
+    assert types == ["PLUS", "MINUS", "STAR", "SLASH", "ASSIGN",
+E   AssertionError: assert [<TokenType.P....LT: 19>, ...] == ['PLUS', 'MIN...N', 'LT', ...]
+E     
+E     At index 0 diff: <TokenType.PLUS: 15> != 'PLUS'
+E     Left contains one more item: <TokenType.EOF: 25>
+E     
+E     Full diff:
+E       [
+E     -     'PLUS',...
+E     
+E     ...Full output truncated (23 lines hidden), use '-vv' to show
+_______________________ test_tokenize_braces_and_parens _______________________
+all.py:39: in test_tokenize_braces_and_parens
+    assert types == ["LBRACE", "RBRACE", "LPAREN", "RPAREN", "SEMICOLON"]
+E   AssertionError: assert [<TokenType.L...Type.EOF: 25>] == ['LBRACE', 'R..., 'SEMICOLON']
+E     
+E     At index 0 diff: <TokenType.LBRACE: 9> != 'LBRACE'
+E     Left contains one more item: <TokenType.EOF: 25>
+E     
+E     Full diff:
+E       [
+E     -     'LBRACE',...
+E     
+E     ...Full output truncated (11 lines hidden), use '-vv' to show
+______________________ test_tokenize_simple_declaration _______________________
+all.py:45: in test_tokenize_simple_declaration
+    assert types == ["INT", "ID", "ASSIGN", "INTCONST", "SEMICOLON"]
+E   AssertionError: assert [<TokenType.I...Type.EOF: 25>] == ['INT', 'ID',..., 'SEMICOLON']
+E     
+E     At index 0 diff: <TokenType.INT: 1> != 'INT'
+E     Left contains one more item: <TokenType.EOF: 25>
+E     
+E     Full diff:
+E       [
+E     -     'INT',...
+E     
+E     ...Full output truncated (11 lines hidden), use '-vv' to show
+________________________ test_tokenize_comment_ignored ________________________
+all.py:53: in test_tokenize_comment_ignored
+    assert types == ["INT", "ID", "SEMICOLON", "INT", "ID", "SEMICOLON"]
+E   AssertionError: assert [<TokenType.I...e.ID: 6>, ...] == ['INT', 'ID',..., 'SEMICOLON']
+E     
+E     At index 0 diff: <TokenType.INT: 1> != 'INT'
+E     Left contains 7 more items, first extra item: <TokenType.ID: 6>
+E     
+E     Full diff:
+E       [
+E     -     'INT',...
+E     
+E     ...Full output truncated (19 lines hidden), use '-vv' to show
+________________________ test_tokenize_comment_at_end _________________________
+all.py:59: in test_tokenize_comment_at_end
+    assert types == ["INT", "ID", "SEMICOLON"]
+E   AssertionError: assert [<TokenType.I...e.ID: 6>, ...] == ['INT', 'ID', 'SEMICOLON']
+E     
+E     At index 0 diff: <TokenType.INT: 1> != 'INT'
+E     Left contains 4 more items, first extra item: <TokenType.SLASH: 18>
+E     
+E     Full diff:
+E       [
+E     -     'INT',...
+E     
+E     ...Full output truncated (10 lines hidden), use '-vv' to show
+______________________________ test_tokenize_eof ______________________________
+all.py:64: in test_tokenize_eof
+    assert tokens[-1].type == "EOF"
+E   AssertionError: assert <TokenType.EOF: 25> == 'EOF'
+E    +  where <TokenType.EOF: 25> = Token(TokenType.EOF, None, line=1, col=7).type
+=========================== short test summary info ===========================
+FAILED all.py::test_tokenize_keywords - AssertionError: assert [<TokenType.I....
+FAILED all.py::test_tokenize_identifiers - AssertionError: assert [] == ['a',...
+FAILED all.py::test_tokenize_integer_constants - AssertionError: assert [] ==...
+FAILED all.py::test_tokenize_float_constants - AssertionError: assert [] == [...
+FAILED all.py::test_tokenize_operators - AssertionError: assert [<TokenType.P...
+FAILED all.py::test_tokenize_braces_and_parens - AssertionError: assert [<Tok...
+FAILED all.py::test_tokenize_simple_declaration - AssertionError: assert [<To...
+FAILED all.py::test_tokenize_comment_ignored - AssertionError: assert [<Token...
+FAILED all.py::test_tokenize_comment_at_end - AssertionError: assert [<TokenT...
+FAILED all.py::test_tokenize_eof - AssertionError: assert <TokenType.EOF: 25>...
+======================== 10 failed, 1 passed in 0.21s =========================
+
+
+STDERR:

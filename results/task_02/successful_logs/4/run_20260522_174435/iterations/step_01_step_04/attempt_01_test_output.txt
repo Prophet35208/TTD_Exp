@@ -1,0 +1,70 @@
+STDOUT:
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.3, pluggy-1.6.0 -- d:\TTD_Exp\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Daniil\AppData\Local\Temp\tmprjxhe5iz
+plugins: anyio-4.13.0
+collecting ... collected 57 items
+
+all.py::test_tokenize_keywords PASSED                                    [  1%]
+all.py::test_tokenize_identifiers PASSED                                 [  3%]
+all.py::test_tokenize_integer_constants PASSED                           [  5%]
+all.py::test_tokenize_float_constants PASSED                             [  7%]
+all.py::test_tokenize_operators PASSED                                   [  8%]
+all.py::test_tokenize_braces_and_parens PASSED                           [ 10%]
+all.py::test_tokenize_simple_declaration PASSED                          [ 12%]
+all.py::test_tokenize_comment_ignored PASSED                             [ 14%]
+all.py::test_tokenize_comment_at_end PASSED                              [ 15%]
+all.py::test_tokenize_eof PASSED                                         [ 17%]
+all.py::test_tokenize_line_and_col PASSED                                [ 19%]
+all.py::test_rules_format PASSED                                         [ 21%]
+all.py::test_first_terminal PASSED                                       [ 22%]
+all.py::test_first_nonterminal PASSED                                    [ 24%]
+all.py::test_first_epsilon PASSED                                        [ 26%]
+all.py::test_first_combined PASSED                                       [ 28%]
+all.py::test_follow_start_symbol PASSED                                  [ 29%]
+all.py::test_follow_after_terminal PASSED                                [ 31%]
+all.py::test_follow_transitive PASSED                                    [ 33%]
+all.py::test_follow_end_of_rule PASSED                                   [ 35%]
+all.py::test_first_follow_full_grammar PASSED                            [ 36%]
+all.py::test_parsing_table_no_conflicts PASSED                           [ 38%]
+all.py::test_parse_empty_main PASSED                                     [ 40%]
+all.py::test_parse_simple_declaration PASSED                             [ 42%]
+all.py::test_parse_declaration_without_init PASSED                       [ 43%]
+all.py::test_parse_multiple_declarations PASSED                          [ 45%]
+all.py::test_parse_assignment PASSED                                     [ 47%]
+all.py::test_parse_empty_statement PASSED                                [ 49%]
+all.py::test_parse_missing_semicolon PASSED                              [ 50%]
+all.py::test_parse_invalid_type PASSED                                   [ 52%]
+all.py::test_parse_missing_closing_brace PASSED                          [ 54%]
+all.py::test_full_rules_structure PASSED                                 [ 56%]
+all.py::test_full_terminals_match_token_types PASSED                     [ 57%]
+all.py::test_full_nonterminals_contain_required PASSED                   [ 59%]
+all.py::test_full_terminals_exact_match PASSED                           [ 61%]
+all.py::test_main_valid_postfix PASSED                                   [ 63%]
+all.py::test_main_valid_prefix PASSED                                    [ 64%]
+all.py::test_main_valid_complex PASSED                                   [ 66%]
+all.py::test_main_valid_empty_body PASSED                                [ 68%]
+all.py::test_main_valid_empty_statement PASSED                           [ 70%]
+all.py::test_main_valid_return_value PASSED                              [ 71%]
+all.py::test_main_valid_return_void PASSED                               [ 73%]
+all.py::test_main_valid_if_with_braces PASSED                            [ 75%]
+all.py::test_main_valid_if_without_braces PASSED                         [ 77%]
+all.py::test_main_valid_nested_blocks PASSED                             [ 78%]
+all.py::test_main_valid_comparison_ops PASSED                            [ 80%]
+all.py::test_main_valid_comments PASSED                                  [ 82%]
+all.py::test_main_error_missing_semicolon PASSED                         [ 84%]
+all.py::test_main_error_invalid_type PASSED                              [ 85%]
+all.py::test_main_error_missing_closing_brace PASSED                     [ 87%]
+all.py::test_main_error_missing_opening_paren PASSED                     [ 89%]
+all.py::test_main_error_unexpected_token PASSED                          [ 91%]
+all.py::test_main_no_file PASSED                                         [ 92%]
+all.py::test_main_empty_file PASSED                                      [ 94%]
+all.py::test_main_valid_arithmetic PASSED                                [ 96%]
+all.py::test_main_valid_unary_minus PASSED                               [ 98%]
+all.py::test_main_valid_parenthesized_expr PASSED                        [100%]
+
+============================= 57 passed in 0.31s ==============================
+
+
+STDERR:

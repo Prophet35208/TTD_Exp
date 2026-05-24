@@ -1,0 +1,12 @@
+# TEST 14: Объявление и использование переменных
+
+>>> EXPRESSION
+int main() {
+    int a;
+    a = 10;
+    double b;
+    b = 5.5;
+}
+
+<<< OUTPUT
+0

@@ -1,0 +1,8 @@
+# TEST 15: Ошибка: отсутствуют круглые скобки после main
+
+>>> EXPRESSION
+int main {
+}
+
+<<< OUTPUT
+1

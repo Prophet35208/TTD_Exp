@@ -6,6 +6,7 @@ import subprocess
 import tempfile
 import shutil
 from pathlib import Path
+import sys
 
 
 class TestRunner:
@@ -50,7 +51,7 @@ class TestRunner:
             # Запускаем pytest
             try:
                 result = subprocess.run(
-                    ["pytest", test_path.name, "-v", "--tb=short"],
+                    [sys.executable, "-m", "pytest", test_path.name, "-v", "--tb=short"],
                     cwd=tmpdir,
                     capture_output=True,
                     text=True,

@@ -1,0 +1,26 @@
+STDOUT:
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.3, pluggy-1.6.0 -- D:\TTD_Exp\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Daniil\AppData\Local\Temp\tmp_hl6qwf0
+plugins: anyio-4.13.0
+collecting ... collected 13 items
+
+all.py::test_plus PASSED                                                 [  7%]
+all.py::test_minus PASSED                                                [ 15%]
+all.py::test_mult PASSED                                                 [ 23%]
+all.py::test_div PASSED                                                  [ 30%]
+all.py::test_div_2 PASSED                                                [ 38%]
+all.py::test_div_3 PASSED                                                [ 46%]
+all.py::test_div_rem PASSED                                              [ 53%]
+all.py::test_div_rem_2 PASSED                                            [ 61%]
+all.py::test_div_rem_3 PASSED                                            [ 69%]
+all.py::test_pow PASSED                                                  [ 76%]
+all.py::test_pow_2 PASSED                                                [ 84%]
+all.py::test_pow_3 PASSED                                                [ 92%]
+all.py::test_single_number PASSED                                        [100%]
+
+============================= 13 passed in 0.02s ==============================
+
+
+STDERR:

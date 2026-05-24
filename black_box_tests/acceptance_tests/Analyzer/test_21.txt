@@ -1,0 +1,9 @@
+# TEST 21: Ошибка: недопустимый оператор
+
+>>> EXPRESSION
+int main() {
+    x = a %% b;
+}
+
+<<< OUTPUT
+1

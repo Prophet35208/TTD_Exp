@@ -1,0 +1,24 @@
+STDOUT:
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.3, pluggy-1.6.0 -- d:\TTD_Exp\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Daniil\AppData\Local\Temp\tmpkkiyvonc
+plugins: anyio-4.13.0
+collecting ... collected 11 items
+
+all.py::test_tokenize_keywords PASSED                                    [  9%]
+all.py::test_tokenize_identifiers PASSED                                 [ 18%]
+all.py::test_tokenize_integer_constants PASSED                           [ 27%]
+all.py::test_tokenize_float_constants PASSED                             [ 36%]
+all.py::test_tokenize_operators PASSED                                   [ 45%]
+all.py::test_tokenize_braces_and_parens PASSED                           [ 54%]
+all.py::test_tokenize_simple_declaration PASSED                          [ 63%]
+all.py::test_tokenize_comment_ignored PASSED                             [ 72%]
+all.py::test_tokenize_comment_at_end PASSED                              [ 81%]
+all.py::test_tokenize_eof PASSED                                         [ 90%]
+all.py::test_tokenize_line_and_col PASSED                                [100%]
+
+============================= 11 passed in 0.06s ==============================
+
+
+STDERR:

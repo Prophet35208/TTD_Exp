@@ -1,0 +1,593 @@
+# TEST 1: простое сложение, постфикс
+>>> MODE
+postfix
+>>> EXPRESSION
+3 4 +
+<<< OUTPUT
+7
+
+# TEST 2: простое сложение, префикс
+>>> MODE
+prefix
+>>> EXPRESSION
++ 3 4
+<<< OUTPUT
+7
+
+# TEST 3: вычитание с отрицательным результатом
+>>> MODE
+postfix
+>>> EXPRESSION
+3 7 -
+<<< OUTPUT
+-4
+
+# TEST 4: умножение
+>>> MODE
+prefix
+>>> EXPRESSION
+* 6 7
+<<< OUTPUT
+42
+
+# TEST 5: деление, дробный результат
+>>> MODE
+postfix
+>>> EXPRESSION
+5 2 /
+<<< OUTPUT
+2.50
+
+# TEST 6: составное выражение
+>>> MODE
+postfix
+>>> EXPRESSION
+5 1 2 + 4 * + 3 -
+<<< OUTPUT
+14
+
+# TEST 7: возведение в степень
+>>> MODE
+postfix
+>>> EXPRESSION
+2 10 ^
+<<< OUTPUT
+1024
+
+# TEST 8: остаток от деления
+>>> MODE
+postfix
+>>> EXPRESSION
+17 5 %
+<<< OUTPUT
+2
+
+# TEST 9: квадратный корень
+>>> MODE
+postfix
+>>> EXPRESSION
+25 sqrt
+<<< OUTPUT
+5
+
+# TEST 10: абсолютное значение
+>>> MODE
+prefix
+>>> EXPRESSION
+abs -42
+<<< OUTPUT
+42
+
+
+# TEST 12: отрицательные операнды
+>>> MODE
+postfix
+>>> EXPRESSION
+-5 -3 +
+<<< OUTPUT
+-8
+
+# TEST 13: деление на ноль
+>>> MODE
+postfix
+>>> EXPRESSION
+5 0 /
+<<< OUTPUT
+Error
+
+# TEST 14: корень из отрицательного числа
+>>> MODE
+postfix
+>>> EXPRESSION
+-16 sqrt
+<<< OUTPUT
+Error
+
+# TEST 15: недостаточно операндов
+>>> MODE
+postfix
+>>> EXPRESSION
+3 +
+<<< OUTPUT
+Error
+
+# TEST 16: избыток операндов
+>>> MODE
+postfix
+>>> EXPRESSION
+3 4 + 5
+<<< OUTPUT
+Error
+
+# TEST 17: неизвестный оператор
+>>> MODE
+postfix
+>>> EXPRESSION
+3 4 foo
+<<< OUTPUT
+Error
+
+# TEST 18: пустое выражение
+>>> MODE
+postfix
+>>> EXPRESSION
+
+<<< OUTPUT
+Error
+
+# TEST 19: неверный режим
+>>> MODE
+infix
+>>> EXPRESSION
+3 4 +
+<<< OUTPUT
+Error
+
+# TEST 20: одно число, без операторов
+>>> MODE
+postfix
+>>> EXPRESSION
+42
+<<< OUTPUT
+42
+
+# TEST 21: лишние пробелы
+>>> MODE
+postfix
+>>> EXPRESSION
+3    4    +
+<<< OUTPUT
+7
+
+# TEST 22: сложное выражение с унарными операторами
+>>> MODE
+postfix
+>>> EXPRESSION
+10 3 % 4 5 * sqrt + 2 ^
+<<< OUTPUT
+29.94
+
+# TEST 23: сложное выражение с унарными операторами
+>>> MODE
+postfix
+>>> EXPRESSION
+10 3 % 4 5 * sqrt + 2 ^
+<<< OUTPUT
+29.94
+
+# TEST 24: ноль как операнд
+>>> MODE
+postfix
+>>> EXPRESSION
+0 5 +
+<<< OUTPUT
+5
+
+# TEST 25: пробелы в начале и конце выражения
+>>> MODE
+postfix
+>>> EXPRESSION
+  3 4 +  
+<<< OUTPUT
+7
+
+# TEST 26: табуляция вместо пробелов
+>>> MODE
+postfix
+>>> EXPRESSION
+3	4	+
+<<< OUTPUT
+7
+
+# TEST 27: отрицательный ноль
+>>> MODE
+postfix
+>>> EXPRESSION
+-0 5 +
+<<< OUTPUT
+5
+
+# TEST 28: очень большое число, сложение
+>>> MODE
+postfix
+>>> EXPRESSION
+99999999999999999999 1 +
+<<< OUTPUT
+100000000000000000000
+
+# TEST 29: очень маленькое отрицательное число, вычитание
+>>> MODE
+postfix
+>>> EXPRESSION
+-99999999999999999999 1 -
+<<< OUTPUT
+-100000000000000000000
+
+# TEST 30: умножение больших чисел
+>>> MODE
+postfix
+>>> EXPRESSION
+1000000 1000000 *
+<<< OUTPUT
+1000000000000
+
+# TEST 31: высокая степень
+>>> MODE
+postfix
+>>> EXPRESSION
+2 64 ^
+<<< OUTPUT
+18446744073709551616
+
+
+# TEST 32: деление, периодическая дробь 2/3
+>>> MODE
+postfix
+>>> EXPRESSION
+2 3 /
+<<< OUTPUT
+0.67
+
+# TEST 33: несколько делений подряд
+>>> MODE
+postfix
+>>> EXPRESSION
+10 3 / 2 /
+<<< OUTPUT
+1.67
+
+# TEST 34: унарный оператор в середине выражения
+>>> MODE
+postfix
+>>> EXPRESSION
+16 sqrt 3 +
+<<< OUTPUT
+7
+
+# TEST 35: два унарных оператора подряд
+>>> MODE
+postfix
+>>> EXPRESSION
+-16 abs sqrt
+<<< OUTPUT
+4
+
+# TEST 36: глубокая вложенность, 10 сложений подряд
+>>> MODE
+postfix
+>>> EXPRESSION
+1 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 +
+<<< OUTPUT
+55
+
+# TEST 37: все бинарные операции в одном выражении
+>>> MODE
+postfix
+>>> EXPRESSION
+10 3 % 2 ^ 5 * 4 / 2 -
+<<< OUTPUT
+-1
+
+# TEST 38: чередование унарных и бинарных операторов
+>>> MODE
+postfix
+>>> EXPRESSION
+5 sqrt 3 4 + * 2 /
+<<< OUTPUT
+7.83
+
+# TEST 39: выражение из одного пробела
+>>> MODE
+postfix
+>>> EXPRESSION
+ 
+<<< OUTPUT
+Error
+
+# TEST 40: только оператор без операндов
+>>> MODE
+postfix
+>>> EXPRESSION
++
+<<< OUTPUT
+Error
+
+# TEST 41: только унарный оператор без операнда
+>>> MODE
+postfix
+>>> EXPRESSION
+sqrt
+<<< OUTPUT
+Error
+
+# TEST 42: деление на ноль
+>>> MODE
+postfix
+>>> EXPRESSION
+5 0 /
+<<< OUTPUT
+Error
+
+# TEST 43: деление на ноль, отрицательный числитель
+>>> MODE
+postfix
+>>> EXPRESSION
+-5 0 /
+<<< OUTPUT
+Error
+
+# TEST 44: ноль делить на ноль
+>>> MODE
+postfix
+>>> EXPRESSION
+0 0 /
+<<< OUTPUT
+Error
+
+# TEST 45: корень из отрицательного числа
+>>> MODE
+postfix
+>>> EXPRESSION
+-16 sqrt
+<<< OUTPUT
+Error
+
+# TEST 46: корень из нуля
+>>> MODE
+postfix
+>>> EXPRESSION
+0 sqrt
+<<< OUTPUT
+0
+
+# TEST 47: недостаточно операндов для бинарного оператора
+>>> MODE
+postfix
+>>> EXPRESSION
+3 +
+<<< OUTPUT
+Error
+
+# TEST 48: избыток операндов
+>>> MODE
+postfix
+>>> EXPRESSION
+3 4 + 5
+<<< OUTPUT
+Error
+
+# TEST 49: три операнда без оператора
+>>> MODE
+postfix
+>>> EXPRESSION
+3 4 5
+<<< OUTPUT
+Error
+
+# TEST 50: неизвестный оператор
+>>> MODE
+postfix
+>>> EXPRESSION
+3 4 foo
+<<< OUTPUT
+Error
+
+# TEST 51: неизвестный оператор среди корректных
+>>> MODE
+postfix
+>>> EXPRESSION
+3 4 + foo 5 *
+<<< OUTPUT
+Error
+
+# TEST 52: пустое выражение
+>>> MODE
+postfix
+>>> EXPRESSION
+
+<<< OUTPUT
+Error
+
+# TEST 53: неверный режим
+>>> MODE
+infix
+>>> EXPRESSION
+3 4 +
+<<< OUTPUT
+Error
+
+# TEST 54: пустой режим
+>>> MODE
+
+>>> EXPRESSION
+3 4 +
+<<< OUTPUT
+Error
+
+# TEST 55: режим в верхнем регистре
+>>> MODE
+POSTFIX
+>>> EXPRESSION
+3 4 +
+<<< OUTPUT
+Error
+
+# TEST 56: только пробелы в режиме
+>>> MODE
+ 
+>>> EXPRESSION
+3 4 +
+<<< OUTPUT
+Error
+
+# TEST 57: выражение с большим количеством пробелов между элементами
+>>> MODE
+postfix
+>>> EXPRESSION
+10          3          %
+<<< OUTPUT
+1
+
+# TEST 58: проверка приоритета в префиксной нотации
+>>> MODE
+prefix
+>>> EXPRESSION
++ * 2 3 4
+<<< OUTPUT
+10
+
+# TEST 59: проверка ассоциативности вычитания в префиксной
+>>> MODE
+prefix
+>>> EXPRESSION
+- - 10 3 2
+<<< OUTPUT
+5
+
+# TEST 60: длинная цепочка вычитаний
+>>> MODE
+postfix
+>>> EXPRESSION
+100 10 - 20 - 30 - 40 -
+<<< OUTPUT
+0
+
+# TEST 61: возведение в дробную степень
+>>> MODE
+postfix
+>>> EXPRESSION
+4 0.5 ^
+<<< OUTPUT
+2.00
+
+# TEST 62: отрицательное основание в дробной степени
+>>> MODE
+postfix
+>>> EXPRESSION
+-4 0.5 ^
+<<< OUTPUT
+Error
+
+# TEST 63: сложение с нулём
+>>> MODE
+postfix
+>>> EXPRESSION
+0 0 +
+<<< OUTPUT
+0
+
+# TEST 64: умножение на ноль
+>>> MODE
+postfix
+>>> EXPRESSION
+99999 0 *
+<<< OUTPUT
+0
+
+# TEST 65: вычитание нуля
+>>> MODE
+postfix
+>>> EXPRESSION
+42 0 -
+<<< OUTPUT
+42
+
+# TEST 66: ноль минус число
+>>> MODE
+postfix
+>>> EXPRESSION
+0 42 -
+<<< OUTPUT
+-42
+
+# TEST 67: абсолютная величина нуля
+>>> MODE
+postfix
+>>> EXPRESSION
+0 abs
+<<< OUTPUT
+0
+
+# TEST 68: абсолютная величина положительного числа
+>>> MODE
+postfix
+>>> EXPRESSION
+42 abs
+<<< OUTPUT
+42
+
+# TEST 69: число с плавающей точкой без целой части
+>>> MODE
+postfix
+>>> EXPRESSION
+.5 1.5 +
+<<< OUTPUT
+Error
+
+# TEST 70: число с несколькими точками
+>>> MODE
+postfix
+>>> EXPRESSION
+3.14.15 2 +
+<<< OUTPUT
+Error
+
+# TEST 71: очень длинное выражение, 20 сложений
+>>> MODE
+postfix
+>>> EXPRESSION
+1 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 + 19 + 20 +
+<<< OUTPUT
+210
+
+# TEST 72: выражение с несколькими унарными операторами в префиксной
+>>> MODE
+prefix
+>>> EXPRESSION
+sqrt abs -16
+<<< OUTPUT
+4
+
+# TEST 73: умножение на единицу
+>>> MODE
+postfix
+>>> EXPRESSION
+12345 1 *
+<<< OUTPUT
+12345
+
+# TEST 74: возведение в первую степень
+>>> MODE
+postfix
+>>> EXPRESSION
+12345 1 ^
+<<< OUTPUT
+12345
+
+# TEST 75: возведение нуля в нулевую степень
+>>> MODE
+postfix
+>>> EXPRESSION
+0 0 ^
+<<< OUTPUT
+Error

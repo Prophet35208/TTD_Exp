@@ -1,0 +1,22 @@
+{
+  "call_number": 3,
+  "timestamp": "20260521_151245_978131",
+  "model": "deepseek/deepseek-v4-pro",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "system",
+      "content": "Ты — разработчик в режиме строгого Test-Driven Development.\n\nТвоя задача: получая тесты и текущий код, генерировать новый код solution.py, который проходит все тесты — и новые, и старые.\n\nПравила:\n- Отвечай только кодом на Python. Без markdown-разметки, без пояснений, без \\`\\`\\`python.\n- Если файл solution.py пуст, напиши код с нуля.\n- Текущий код solution.py, если не пустой, уже содержит реализацию предыдущих шагов TDD. Не ломай то, что уже работает.\n- Изменения должны быть минимальными и направленными только на прохождение новых тестов.\n- Не добавляй функциональность, не требуемую тестами.\n- Не изменяй тесты.\n- Если все тесты уже проходят, верни текущий код без изменений.\n\nТы получаешь полную историю диалога, включая все предыдущие попытки, если такие были. Используй этот контекст, чтобы делать верный вывод или не повторять ошибок."
+    },
+    {
+      "role": "user",
+      "content": "Вот текущий код solution.py. Если он не указан, то его нет и нужно написать с нуля:\n\n\n\nТесты, которые уже пройдены (они должны продолжать проходить). Если пусто, то прошлых тестов нет:\n\n\n\nНовые тесты, которые нужно пройти:\n\nfrom solution import calculate\n\n######## Plus #########\ndef test_plus():\n    assert calculate(\"1 2 +\") == 3\n\n######## Minus #########\ndef test_minus():\n    assert calculate(\"1 2 -\") == -1\n\n######## Mult #########\ndef test_mult():\n    assert calculate(\"3 4 *\") == 12\n\n######## Div #########\ndef test_div():\n    assert calculate(\"3 4 /\") == 0\n\ndef test_div_2():\n    assert calculate(\"12 4 /\") == 3\n\ndef test_div_3():\n    assert calculate(\"12 0 /\") is None\n\n######## DivRemainder #########\ndef test_div_rem():\n    assert calculate(\"3 4 %\") == 3\n\ndef test_div_rem_2():\n    assert calculate(\"12 4 %\") == 0\n\ndef test_div_rem_3():\n    assert calculate(\"12 0 %\") is None\n\n######## Pow #########\ndef test_pow():\n    assert calculate(\"3 4 ^\") == 81\n\ndef test_pow_2():\n    assert calculate(\"0 -1 ^\") is None\n\ndef test_pow_3():\n    assert calculate(\"0 0 ^\") is None\n\n######## Single number #########\ndef test_single_number():\n    assert calculate(\"3\") == 3\n\nНапиши полный, новый код файла solution.py, который проходит все тесты.\n\nОтвечай ТОЛЬКО кодом на Python, без пояснений и markdown-разметки."
+    }
+  ],
+  "response": "def calculate(expression):\n    tokens = expression.split()\n    if len(tokens) == 1:\n        return int(tokens[0])\n    \n    a = int(tokens[0])\n    b = int(tokens[1])\n    op = tokens[2]\n    \n    if op == '+':\n        return a + b\n    elif op == '-':\n        return a - b\n    elif op == '*':\n        return a * b\n    elif op == '/':\n        if b == 0:\n            return None\n        return a // b\n    elif op == '%':\n        if b == 0:\n            return None\n        return a % b\n    elif op == '^':\n        if a == 0 and b <= 0:\n            return None\n        return a ** b",
+  "usage": {
+    "prompt_tokens": 641,
+    "completion_tokens": 166,
+    "total_tokens": 807
+  }
+}

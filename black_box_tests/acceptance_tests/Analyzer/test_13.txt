@@ -1,0 +1,10 @@
+# TEST 13: Объявление переменных int и double
+
+>>> EXPRESSION
+int main() {
+    int a;
+    double b;
+}
+
+<<< OUTPUT
+0

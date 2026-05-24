@@ -19,7 +19,7 @@ STUB_FILENAME = "solution.py"                        # Имя файла-заг�
 # -----------------------------------------------------------
 # Настройки LLM (OpenAI-совместимый API)
 # -----------------------------------------------------------
-LLM_API_KEY = os.environ.get("LLM_API_KEY", "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")
+LLM_API_KEY = os.environ.get("LLM_API_KEY", "secret")
 LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "https://openrouter.ai/api/v1")
 LLM_MODEL = os.environ.get("LLM_MODEL", "deepseek/deepseek-v4-pro")
 LLM_TEMPERATURE = 0.0                                  # Детерминированные ответы
@@ -32,15 +32,6 @@ MAX_ITERATIONS = 5          # Максимальное количество по
 TEST_TIMEOUT = 30           # Таймаут на прогон pytest (секунды)
 PATCH_TIMEOUT = 10          # Таймаут на применение патча (секунды)
 REFACTOR_ENABLED = True     # Делать ли шаг рефакторинга после зелёных тестов
-
-# -----------------------------------------------------------
-# Имена папок внутри задачи
-# -----------------------------------------------------------
-TESTS_DIRNAME = "tests"         # Папка с пошаговыми тестами TDD
-STUB_DIRNAME = "stub"           # Папка со скелетом кода
-EXPECTED_DIRNAME = "expected"   # Папка с эталонным решением
-ACCEPTANCE_FILENAME = "acceptance_test_data.txt"  # Файл приёмочных тестов
-TASK_DESCRIPTION_FILENAME = "task_description.md"
 
 # -----------------------------------------------------------
 # Имена папок для результатов одного запуска

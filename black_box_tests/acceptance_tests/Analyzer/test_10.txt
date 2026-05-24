@@ -1,0 +1,11 @@
+# TEST 10: Вложенный if
+
+>>> EXPRESSION
+int main() {
+    if (a > b)
+        if (c < d)
+            x = 1;
+}
+
+<<< OUTPUT
+0

@@ -1,0 +1,12 @@
+# TEST 6: Арифметические операции
+
+>>> EXPRESSION
+int main() {
+    x = a + b;
+    y = a - b;
+    z = a * b;
+    w = a / b;
+}
+
+<<< OUTPUT
+0

@@ -1,0 +1,256 @@
+STDOUT:
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.3, pluggy-1.6.0 -- D:\TTD_Exp\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Daniil\AppData\Local\Temp\tmptrus19u5
+plugins: anyio-4.13.0
+collecting ... collected 61 items
+
+all.py::test_plus PASSED                                                 [  1%]
+all.py::test_minus PASSED                                                [  3%]
+all.py::test_mult PASSED                                                 [  4%]
+all.py::test_div PASSED                                                  [  6%]
+all.py::test_div_2 PASSED                                                [  8%]
+all.py::test_div_3 PASSED                                                [  9%]
+all.py::test_div_rem PASSED                                              [ 11%]
+all.py::test_div_rem_2 PASSED                                            [ 13%]
+all.py::test_div_rem_3 PASSED                                            [ 14%]
+all.py::test_pow PASSED                                                  [ 16%]
+all.py::test_pow_2 PASSED                                                [ 18%]
+all.py::test_pow_3 PASSED                                                [ 19%]
+all.py::test_single_number PASSED                                        [ 21%]
+all.py::test_sqrt FAILED                                                 [ 22%]
+all.py::test_sqrt_2 PASSED                                               [ 24%]
+all.py::test_abs FAILED                                                  [ 26%]
+all.py::test_abs_2 FAILED                                                [ 27%]
+all.py::test_no_operands_plus PASSED                                     [ 29%]
+all.py::test_no_operands_plus_one PASSED                                 [ 31%]
+all.py::test_no_operands_mult PASSED                                     [ 32%]
+all.py::test_no_operands_mult_one PASSED                                 [ 34%]
+all.py::test_no_operands_minus PASSED                                    [ 36%]
+all.py::test_no_operands_minus_one PASSED                                [ 37%]
+all.py::test_no_operands_div PASSED                                      [ 39%]
+all.py::test_no_operands_div_one PASSED                                  [ 40%]
+all.py::test_no_operands_rem PASSED                                      [ 42%]
+all.py::test_no_operands_rem_one PASSED                                  [ 44%]
+all.py::test_no_operands_abs PASSED                                      [ 45%]
+all.py::test_no_operands_sqrt PASSED                                     [ 47%]
+all.py::test_no_operands_pow PASSED                                      [ 49%]
+all.py::test_no_operands_pow_one PASSED                                  [ 50%]
+all.py::test_empty_expr PASSED                                           [ 52%]
+all.py::test_unknown_operator FAILED                                     [ 54%]
+all.py::test_unknown_operation PASSED                                    [ 55%]
+all.py::test_too_many_operands PASSED                                    [ 57%]
+all.py::test_complex_expr PASSED                                         [ 59%]
+all.py::test_prefix_plus FAILED                                          [ 60%]
+all.py::test_prefix_minus FAILED                                         [ 62%]
+all.py::test_prefix_mult FAILED                                          [ 63%]
+all.py::test_prefix_div FAILED                                           [ 65%]
+all.py::test_prefix_div_2 FAILED                                         [ 67%]
+all.py::test_prefix_div_3 FAILED                                         [ 68%]
+all.py::test_prefix_div_rem FAILED                                       [ 70%]
+all.py::test_prefix_div_rem_2 FAILED                                     [ 72%]
+all.py::test_prefix_div_rem_3 FAILED                                     [ 73%]
+all.py::test_prefix_pow FAILED                                           [ 75%]
+all.py::test_prefix_pow_2 FAILED                                         [ 77%]
+all.py::test_prefix_pow_3 FAILED                                         [ 78%]
+all.py::test_prefix_sqrt FAILED                                          [ 80%]
+all.py::test_prefix_sqrt_2 FAILED                                        [ 81%]
+all.py::test_prefix_abs FAILED                                           [ 83%]
+all.py::test_prefix_abs_2 FAILED                                         [ 85%]
+all.py::test_prefix_no_operands_plus FAILED                              [ 86%]
+all.py::test_prefix_no_operands_plus_one FAILED                          [ 88%]
+all.py::test_prefix_no_operands_sqrt FAILED                              [ 90%]
+all.py::test_prefix_empty FAILED                                         [ 91%]
+all.py::test_prefix_unknown FAILED                                       [ 93%]
+all.py::test_prefix_unknown_2 FAILED                                     [ 95%]
+all.py::test_prefix_single_number FAILED                                 [ 96%]
+all.py::test_prefix_too_many FAILED                                      [ 98%]
+all.py::test_prefix_complex FAILED                                       [100%]
+
+================================== FAILURES ===================================
+__________________________________ test_sqrt __________________________________
+all.py:51: in test_sqrt
+    assert calculate("25 sqrt") == 5
+E   AssertionError: assert None == 5
+E    +  where None = calculate('25 sqrt')
+__________________________________ test_abs ___________________________________
+all.py:58: in test_abs
+    assert calculate("4 abs") == 4
+E   AssertionError: assert None == 4
+E    +  where None = calculate('4 abs')
+_________________________________ test_abs_2 __________________________________
+all.py:61: in test_abs_2
+    assert calculate("-4 abs") == 4
+E   AssertionError: assert None == 4
+E    +  where None = calculate('-4 abs')
+____________________________ test_unknown_operator ____________________________
+all.py:111: in test_unknown_operator
+    assert calculate("3 4 **") is None
+           ^^^^^^^^^^^^^^^^^^^
+solution.py:59: in calculate
+    return _apply_operator(first, second, operator)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+solution.py:21: in _apply_operator
+    return operations[operator](first, second)
+           ^^^^^^^^^^^^^^^^^^^^
+E   KeyError: '**'
+______________________________ test_prefix_plus _______________________________
+all.py:126: in test_prefix_plus
+    assert calculate_prefix("+ 1 2") == 3
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+______________________________ test_prefix_minus ______________________________
+all.py:130: in test_prefix_minus
+    assert calculate_prefix("- 1 2") == -1
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+______________________________ test_prefix_mult _______________________________
+all.py:134: in test_prefix_mult
+    assert calculate_prefix("* 3 4") == 12
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+_______________________________ test_prefix_div _______________________________
+all.py:138: in test_prefix_div
+    assert calculate_prefix("/ 3 4") == 0
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+______________________________ test_prefix_div_2 ______________________________
+all.py:141: in test_prefix_div_2
+    assert calculate_prefix("/ 12 4") == 3
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+______________________________ test_prefix_div_3 ______________________________
+all.py:144: in test_prefix_div_3
+    assert calculate_prefix("/ 12 0") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+_____________________________ test_prefix_div_rem _____________________________
+all.py:148: in test_prefix_div_rem
+    assert calculate_prefix("% 3 4") == 3
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+____________________________ test_prefix_div_rem_2 ____________________________
+all.py:151: in test_prefix_div_rem_2
+    assert calculate_prefix("% 12 4") == 0
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+____________________________ test_prefix_div_rem_3 ____________________________
+all.py:154: in test_prefix_div_rem_3
+    assert calculate_prefix("% 12 0") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+_______________________________ test_prefix_pow _______________________________
+all.py:158: in test_prefix_pow
+    assert calculate_prefix("^ 3 4") == 81
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+______________________________ test_prefix_pow_2 ______________________________
+all.py:161: in test_prefix_pow_2
+    assert calculate_prefix("^ 0 -1") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+______________________________ test_prefix_pow_3 ______________________________
+all.py:164: in test_prefix_pow_3
+    assert calculate_prefix("^ 0 0") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+______________________________ test_prefix_sqrt _______________________________
+all.py:168: in test_prefix_sqrt
+    assert calculate_prefix("sqrt 25") == 5
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+_____________________________ test_prefix_sqrt_2 ______________________________
+all.py:171: in test_prefix_sqrt_2
+    assert calculate_prefix("sqrt -4") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+_______________________________ test_prefix_abs _______________________________
+all.py:175: in test_prefix_abs
+    assert calculate_prefix("abs 4") == 4
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+______________________________ test_prefix_abs_2 ______________________________
+all.py:178: in test_prefix_abs_2
+    assert calculate_prefix("abs -4") == 4
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+________________________ test_prefix_no_operands_plus _________________________
+all.py:182: in test_prefix_no_operands_plus
+    assert calculate_prefix("+") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+______________________ test_prefix_no_operands_plus_one _______________________
+all.py:185: in test_prefix_no_operands_plus_one
+    assert calculate_prefix("+ 3") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+________________________ test_prefix_no_operands_sqrt _________________________
+all.py:188: in test_prefix_no_operands_sqrt
+    assert calculate_prefix("sqrt") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+______________________________ test_prefix_empty ______________________________
+all.py:191: in test_prefix_empty
+    assert calculate_prefix("") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+_____________________________ test_prefix_unknown _____________________________
+all.py:194: in test_prefix_unknown
+    assert calculate_prefix("** 3 4") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+____________________________ test_prefix_unknown_2 ____________________________
+all.py:197: in test_prefix_unknown_2
+    assert calculate_prefix("mult") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+__________________________ test_prefix_single_number __________________________
+all.py:200: in test_prefix_single_number
+    assert calculate_prefix("3") == 3
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+____________________________ test_prefix_too_many _____________________________
+all.py:203: in test_prefix_too_many
+    assert calculate_prefix("3 4") is None
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+_____________________________ test_prefix_complex _____________________________
+all.py:206: in test_prefix_complex
+    assert calculate_prefix("+ - + 1 * 2 3 4 % 5 6") == 8
+           ^^^^^^^^^^^^^^^^
+E   NameError: name 'calculate_prefix' is not defined
+=========================== short test summary info ===========================
+FAILED all.py::test_sqrt - AssertionError: assert None == 5
+FAILED all.py::test_abs - AssertionError: assert None == 4
+FAILED all.py::test_abs_2 - AssertionError: assert None == 4
+FAILED all.py::test_unknown_operator - KeyError: '**'
+FAILED all.py::test_prefix_plus - NameError: name 'calculate_prefix' is not d...
+FAILED all.py::test_prefix_minus - NameError: name 'calculate_prefix' is not ...
+FAILED all.py::test_prefix_mult - NameError: name 'calculate_prefix' is not d...
+FAILED all.py::test_prefix_div - NameError: name 'calculate_prefix' is not de...
+FAILED all.py::test_prefix_div_2 - NameError: name 'calculate_prefix' is not ...
+FAILED all.py::test_prefix_div_3 - NameError: name 'calculate_prefix' is not ...
+FAILED all.py::test_prefix_div_rem - NameError: name 'calculate_prefix' is no...
+FAILED all.py::test_prefix_div_rem_2 - NameError: name 'calculate_prefix' is ...
+FAILED all.py::test_prefix_div_rem_3 - NameError: name 'calculate_prefix' is ...
+FAILED all.py::test_prefix_pow - NameError: name 'calculate_prefix' is not de...
+FAILED all.py::test_prefix_pow_2 - NameError: name 'calculate_prefix' is not ...
+FAILED all.py::test_prefix_pow_3 - NameError: name 'calculate_prefix' is not ...
+FAILED all.py::test_prefix_sqrt - NameError: name 'calculate_prefix' is not d...
+FAILED all.py::test_prefix_sqrt_2 - NameError: name 'calculate_prefix' is not...
+FAILED all.py::test_prefix_abs - NameError: name 'calculate_prefix' is not de...
+FAILED all.py::test_prefix_abs_2 - NameError: name 'calculate_prefix' is not ...
+FAILED all.py::test_prefix_no_operands_plus - NameError: name 'calculate_pref...
+FAILED all.py::test_prefix_no_operands_plus_one - NameError: name 'calculate_...
+FAILED all.py::test_prefix_no_operands_sqrt - NameError: name 'calculate_pref...
+FAILED all.py::test_prefix_empty - NameError: name 'calculate_prefix' is not ...
+FAILED all.py::test_prefix_unknown - NameError: name 'calculate_prefix' is no...
+FAILED all.py::test_prefix_unknown_2 - NameError: name 'calculate_prefix' is ...
+FAILED all.py::test_prefix_single_number - NameError: name 'calculate_prefix'...
+FAILED all.py::test_prefix_too_many - NameError: name 'calculate_prefix' is n...
+FAILED all.py::test_prefix_complex - NameError: name 'calculate_prefix' is no...
+======================== 29 failed, 32 passed in 0.18s ========================
+
+
+STDERR:

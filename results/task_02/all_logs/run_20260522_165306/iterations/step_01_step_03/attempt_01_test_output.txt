@@ -1,0 +1,147 @@
+STDOUT:
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.3, pluggy-1.6.0 -- d:\TTD_Exp\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Daniil\AppData\Local\Temp\tmpllcdk5u5
+plugins: anyio-4.13.0
+collecting ... collected 35 items
+
+all.py::test_tokenize_keywords PASSED                                    [  2%]
+all.py::test_tokenize_identifiers PASSED                                 [  5%]
+all.py::test_tokenize_integer_constants PASSED                           [  8%]
+all.py::test_tokenize_float_constants PASSED                             [ 11%]
+all.py::test_tokenize_operators PASSED                                   [ 14%]
+all.py::test_tokenize_braces_and_parens PASSED                           [ 17%]
+all.py::test_tokenize_simple_declaration PASSED                          [ 20%]
+all.py::test_tokenize_comment_ignored PASSED                             [ 22%]
+all.py::test_tokenize_comment_at_end PASSED                              [ 25%]
+all.py::test_tokenize_eof PASSED                                         [ 28%]
+all.py::test_tokenize_line_and_col PASSED                                [ 31%]
+all.py::test_rules_format PASSED                                         [ 34%]
+all.py::test_first_terminal PASSED                                       [ 37%]
+all.py::test_first_nonterminal PASSED                                    [ 40%]
+all.py::test_first_epsilon PASSED                                        [ 42%]
+all.py::test_first_combined PASSED                                       [ 45%]
+all.py::test_follow_start_symbol PASSED                                  [ 48%]
+all.py::test_follow_after_terminal PASSED                                [ 51%]
+all.py::test_follow_transitive PASSED                                    [ 54%]
+all.py::test_follow_end_of_rule PASSED                                   [ 57%]
+all.py::test_first_follow_full_grammar PASSED                            [ 60%]
+all.py::test_parsing_table_no_conflicts FAILED                           [ 62%]
+all.py::test_parse_empty_main FAILED                                     [ 65%]
+all.py::test_parse_simple_declaration FAILED                             [ 68%]
+all.py::test_parse_declaration_without_init FAILED                       [ 71%]
+all.py::test_parse_multiple_declarations FAILED                          [ 74%]
+all.py::test_parse_assignment FAILED                                     [ 77%]
+all.py::test_parse_empty_statement FAILED                                [ 80%]
+all.py::test_parse_missing_semicolon FAILED                              [ 82%]
+all.py::test_parse_invalid_type FAILED                                   [ 85%]
+all.py::test_parse_missing_closing_brace FAILED                          [ 88%]
+all.py::test_full_rules_structure FAILED                                 [ 91%]
+all.py::test_full_terminals_match_token_types PASSED                     [ 94%]
+all.py::test_full_nonterminals_contain_required PASSED                   [ 97%]
+all.py::test_full_terminals_exact_match PASSED                           [100%]
+
+================================== FAILURES ===================================
+_______________________ test_parsing_table_no_conflicts _______________________
+all.py:189: in test_parsing_table_no_conflicts
+    first = compute_first(FULL_RULES, FULL_NONTERMINALS, FULL_TERMINALS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+solution.py:154: in compute_first
+    if sym not in first[lhs]:
+                  ^^^^^^^^^^
+E   KeyError: 'AddExprTail'
+____________________________ test_parse_empty_main ____________________________
+all.py:201: in test_parse_empty_main
+    first = compute_first(FULL_RULES, FULL_NONTERMINALS, FULL_TERMINALS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+solution.py:154: in compute_first
+    if sym not in first[lhs]:
+                  ^^^^^^^^^^
+E   KeyError: 'AddExprTail'
+________________________ test_parse_simple_declaration ________________________
+all.py:212: in test_parse_simple_declaration
+    first = compute_first(FULL_RULES, FULL_NONTERMINALS, FULL_TERMINALS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+solution.py:154: in compute_first
+    if sym not in first[lhs]:
+                  ^^^^^^^^^^
+E   KeyError: 'AddExprTail'
+_____________________ test_parse_declaration_without_init _____________________
+all.py:223: in test_parse_declaration_without_init
+    first = compute_first(FULL_RULES, FULL_NONTERMINALS, FULL_TERMINALS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+solution.py:154: in compute_first
+    if sym not in first[lhs]:
+                  ^^^^^^^^^^
+E   KeyError: 'AddExprTail'
+______________________ test_parse_multiple_declarations _______________________
+all.py:234: in test_parse_multiple_declarations
+    first = compute_first(FULL_RULES, FULL_NONTERMINALS, FULL_TERMINALS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+solution.py:154: in compute_first
+    if sym not in first[lhs]:
+                  ^^^^^^^^^^
+E   KeyError: 'AddExprTail'
+____________________________ test_parse_assignment ____________________________
+all.py:245: in test_parse_assignment
+    first = compute_first(FULL_RULES, FULL_NONTERMINALS, FULL_TERMINALS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+solution.py:154: in compute_first
+    if sym not in first[lhs]:
+                  ^^^^^^^^^^
+E   KeyError: 'AddExprTail'
+_________________________ test_parse_empty_statement __________________________
+all.py:256: in test_parse_empty_statement
+    first = compute_first(FULL_RULES, FULL_NONTERMINALS, FULL_TERMINALS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+solution.py:154: in compute_first
+    if sym not in first[lhs]:
+                  ^^^^^^^^^^
+E   KeyError: 'AddExprTail'
+________________________ test_parse_missing_semicolon _________________________
+all.py:267: in test_parse_missing_semicolon
+    first = compute_first(FULL_RULES, FULL_NONTERMINALS, FULL_TERMINALS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+solution.py:154: in compute_first
+    if sym not in first[lhs]:
+                  ^^^^^^^^^^
+E   KeyError: 'AddExprTail'
+___________________________ test_parse_invalid_type ___________________________
+all.py:278: in test_parse_invalid_type
+    first = compute_first(FULL_RULES, FULL_NONTERMINALS, FULL_TERMINALS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+solution.py:154: in compute_first
+    if sym not in first[lhs]:
+                  ^^^^^^^^^^
+E   KeyError: 'AddExprTail'
+______________________ test_parse_missing_closing_brace _______________________
+all.py:289: in test_parse_missing_closing_brace
+    first = compute_first(FULL_RULES, FULL_NONTERMINALS, FULL_TERMINALS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+solution.py:154: in compute_first
+    if sym not in first[lhs]:
+                  ^^^^^^^^^^
+E   KeyError: 'AddExprTail'
+__________________________ test_full_rules_structure __________________________
+all.py:304: in test_full_rules_structure
+    assert sym in FULL_TERMINALS or sym in FULL_NONTERMINALS or sym == ""
+E   AssertionError: assert ('AddExprTail' in {'!=', '(', ')', '*', '+', '-', ...} or 'AddExprTail' in {'AddExpr', 'AssignExpr', 'Block', 'BlockItem', 'BlockItems', 'Cond', ...} or 'AddExprTail' == ''
+E     
+E     + AddExprTail)
+=========================== short test summary info ===========================
+FAILED all.py::test_parsing_table_no_conflicts - KeyError: 'AddExprTail'
+FAILED all.py::test_parse_empty_main - KeyError: 'AddExprTail'
+FAILED all.py::test_parse_simple_declaration - KeyError: 'AddExprTail'
+FAILED all.py::test_parse_declaration_without_init - KeyError: 'AddExprTail'
+FAILED all.py::test_parse_multiple_declarations - KeyError: 'AddExprTail'
+FAILED all.py::test_parse_assignment - KeyError: 'AddExprTail'
+FAILED all.py::test_parse_empty_statement - KeyError: 'AddExprTail'
+FAILED all.py::test_parse_missing_semicolon - KeyError: 'AddExprTail'
+FAILED all.py::test_parse_invalid_type - KeyError: 'AddExprTail'
+FAILED all.py::test_parse_missing_closing_brace - KeyError: 'AddExprTail'
+FAILED all.py::test_full_rules_structure - AssertionError: assert ('AddExprTa...
+======================== 11 failed, 24 passed in 0.51s ========================
+
+
+STDERR:

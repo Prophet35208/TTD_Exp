@@ -56,14 +56,14 @@ class Orchestrator:
             return match.group(1).strip()
         return text
 
-    def run_task(self, task_dir: Path, step_file: str = None) -> dict:
+    def run_task(self, task_dir: Path, step_name: str = None) -> dict:
         """
-        Запускает TDD-цикл для одного или всех шагов задачи.
+        Запускает TDD-цикл для одного шага задачи.
 
         Args:
             task_dir: путь к папке задачи
-            step_file: имя файла шага (например, "step_01_test.py"). 
-                       Если None — выполняются все шаги по порядку.
+            step_name: имя папки шага (например, "step_01"). 
+                    Если None — выполняются все шаги по порядку.
 
         Returns:
             dict с результатами запуска
@@ -76,14 +76,14 @@ class Orchestrator:
             raise FileNotFoundError(f"Папка с тестами не найдена: {tests_dir}")
 
         # Собираем шаги
-        if step_file:
-            step_files = [tests_dir / step_file]
-            if not step_files[0].exists():
-                raise FileNotFoundError(f"Файл тестов не найден: {step_files[0]}")
+        if step_name:
+            step_dirs = [tests_dir / step_name]
+            if not step_dirs[0].exists():
+                raise FileNotFoundError(f"Папка шага не найдена: {step_dirs[0]}")
         else:
-            step_files = sorted(tests_dir.glob("step_*.py"))
-            if not step_files:
-                raise FileNotFoundError(f"Нет файлов тестов (step_*.py) в {tests_dir}")
+            step_dirs = sorted(tests_dir.glob("step_*"))
+            if not step_dirs:
+                raise FileNotFoundError(f"Нет папок шагов (step_*) в {tests_dir}")
 
         # Создаём папку для результатов
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -109,16 +109,33 @@ class Orchestrator:
         total_start_time = time.time()
 
         # Главный цикл по шагам TDD
-        for step_idx, test_file in enumerate(step_files, 1):
-            step_name = test_file.stem
+        for step_idx, step_dir in enumerate(step_dirs, 1):
+            step_name_dir = step_dir.name
             print(f"\n{'='*60}")
-            print(f"Шаг {step_idx}/{len(step_files)}: {step_name}")
+            print(f"Шаг {step_idx}/{len(step_dirs)}: {step_name_dir}")
             print(f"{'='*60}")
 
+            # Пути к файлам тестов
+            current_test_file = step_dir / "current.py"
+            previous_test_file = step_dir / "previous.py"
+            all_test_file = step_dir / "all.py"
+
+            if not current_test_file.exists():
+                raise FileNotFoundError(f"Файл current.py не найден в {step_dir}")
+            if not all_test_file.exists():
+                raise FileNotFoundError(f"Файл all.py не найден в {step_dir}")
+
+            # Читаем previous_test_code (может быть пустым)
+            previous_test_code = ""
+            if previous_test_file.exists():
+                previous_test_code = previous_test_file.read_text(encoding="utf-8")
+
             step_result = self._run_step(
-                step_name=step_name,
+                step_name=step_name_dir,
                 step_idx=step_idx,
-                test_file=test_file,
+                test_file=all_test_file,           # Запускаем ВСЕ тесты
+                current_test_file=current_test_file,  # Для промпта — новые тесты
+                previous_test_code=previous_test_code, # Для промпта — старые тесты
                 current_solution=current_solution,
                 run_dir=run_dir,
                 iterations_dir=iterations_dir,
@@ -126,7 +143,7 @@ class Orchestrator:
             all_steps.append(step_result)
 
             if not step_result["success"]:
-                print(f"\n[!] Шаг {step_name} не пройден за {MAX_ITERATIONS} попыток.")
+                print(f"\n[!] Шаг {step_name_dir} не пройден за {MAX_ITERATIONS} попыток.")
                 break
 
         total_time = time.time() - total_start_time
@@ -134,9 +151,9 @@ class Orchestrator:
         # Итоговый отчёт
         report = {
             "task": task_name,
-            "step_file": step_file,
+            "step_name": step_name,
             "timestamp": timestamp,
-            "total_steps": len(step_files),
+            "total_steps": len(step_dirs),
             "completed_steps": len([s for s in all_steps if s["success"]]),
             "all_passed": all(s["success"] for s in all_steps),
             "total_time_sec": round(total_time, 2),
@@ -153,8 +170,8 @@ class Orchestrator:
 
         print(f"\n{'='*60}")
         print(f"Задача: {task_name}")
-        if step_file:
-            print(f"Шаг: {step_file}")
+        if step_name:
+            print(f"Шаг: {step_name}")
         print(f"Пройдено шагов: {report['completed_steps']}/{report['total_steps']}")
         print(f"Все тесты пройдены: {report['all_passed']}")
         print(f"Общее время: {report['total_time_sec']}с")
@@ -166,45 +183,34 @@ class Orchestrator:
         self,
         step_name: str,
         step_idx: int,
-        test_file: Path,
+        test_file: Path,              # all.py — для запуска
+        current_test_file: Path,      # current.py — для промпта
+        previous_test_code: str,      # previous.py — для промпта
         current_solution: Path,
         run_dir: Path,
         iterations_dir: Path,
     ) -> dict:
         """
         Выполняет один шаг TDD.
-
-        Args:
-            step_name: имя шага
-            step_idx: номер шага
-            test_file: путь к файлу с тестами
-            current_solution: путь к текущему solution.py
-            run_dir: папка результатов запуска
-            iterations_dir: папка для логов итераций
-
-        Returns:
-            dict с результатом шага
         """
-        test_code = test_file.read_text(encoding="utf-8")
+        test_code = current_test_file.read_text(encoding="utf-8")
         step_iterations = []
 
-        # Папка для итераций этого шага
         step_iter_dir = iterations_dir / f"step_{step_idx:02d}_{step_name}"
         step_iter_dir.mkdir(exist_ok=True)
 
-        # История сообщений для этого шага
         messages_history = []
 
         for attempt in range(1, MAX_ITERATIONS + 1):
             print(f"\n  Попытка {attempt}/{MAX_ITERATIONS}")
 
-            # 1. Формируем промпт
             current_code = current_solution.read_text(encoding="utf-8")
 
             if attempt == 1:
                 user_prompt = self.pm.build_initial_prompt(
                     current_code=current_code,
                     test_code=test_code,
+                    previous_test_code=previous_test_code,
                 )
             else:
                 last_iter = step_iterations[-1]
@@ -265,7 +271,7 @@ class Orchestrator:
             solution_copy.write_text(current_solution.read_text(encoding="utf-8"))
 
             if test_result["passed"]:
-                print(f"    ✅ Тесты пройдены!")
+                print(f"Тесты пройдены!")
                 iter_log["error_type"] = None
                 iter_log["error_output"] = ""
                 step_iterations.append(iter_log)
@@ -287,7 +293,7 @@ class Orchestrator:
                 error_output = test_result["stderr"] or test_result["stdout"]
                 iter_log["error_type"] = "test_failure"
                 iter_log["error_output"] = error_output
-                print(f"    ❌ Тесты упали")
+                print(f"Тесты упали")
 
             step_iterations.append(iter_log)
 
@@ -330,9 +336,9 @@ class Orchestrator:
             test_result = self.runner.run(solution_path, self._current_test_file)
 
             if test_result["passed"]:
-                print(f"    ✅ Тесты пройдены, рефакторинг успешен")
+                print(f"Тесты пройдены, рефакторинг успешен")
             else:
-                print(f"    ❌ Тесты упали, откатываем рефакторинг")
+                print(f"Тесты упали, откатываем рефакторинг")
                 solution_path.write_text(backup_code, encoding="utf-8")
         else:
             print(f"    Рефакторинг применён (без проверки тестов)")

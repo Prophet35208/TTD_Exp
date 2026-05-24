@@ -1,0 +1,14 @@
+# TEST 11: Все операции сравнения
+
+>>> EXPRESSION
+int main() {
+    if (a == b)
+        x = 1;
+    if (a != b)
+        x = 2;
+    if (a >= b)
+        x = 3;
+}
+
+<<< OUTPUT
+0

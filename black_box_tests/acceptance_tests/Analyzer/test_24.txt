@@ -1,0 +1,9 @@
+# TEST 24: Вещественные вычисления
+
+>>> EXPRESSION
+int main() {
+    result = 1.5 + 2.5 * 3.0;
+}
+
+<<< OUTPUT
+0

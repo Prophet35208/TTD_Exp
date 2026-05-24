@@ -1,0 +1,20 @@
+<Program> -> <Datatype> <ObjectWithDatatype> <Program> | e
+<Datatype> -> int | double
+<ObjectWithDatatype> -> main() <CompoundStatement> | <id> <Initialization> <VarList>;
+<VarList> -> , <id> <Initialization> <VarList> | e
+<Initialization> -> = <Expression> | e
+<CompoundStatement> -> { <StatementList> }
+<StatementList> -> <Statement> <StatementList> | e
+<Statement> -> <CompoundStatement> | <id> = <Expression>; | <Datatype> <id> <Initialization> <VarList>; | if (<Expression>) <Statement> | return <Expression> | ;
+
+<Expression> -> <Expr2> <ExprOperationList>
+<ExprOperationList> -> == <Expr2> <ExprOperationList> | != <Expr2> <ExprOperationList> | e
+<Expr2> -> <Expr3> <Expr2OperationList>
+<Expr2OperationList> -> < <Expr3> <Expr2OperationList> | > <Expr3> <Expr2OperationList> | <= <Expr3> <Expr2OperationList> | >= <Expr3> <Expr2OperationList> | e
+<Expr3> -> <Expr4> <Expr3OperationList>
+<Expr3OperationList> -> + <Expr4> <Expr3OperationList> | - <Expr4> <Expr3OperationList> | e
+<Expr4> -> <Expr5> <Expr4OperationList> 
+<Expr4OperationList> -> * <Expr5> <Expr4OperationList> | / <Expr5> <Expr4OperationList> | % <Expr5> <Expr4OperationList> | e
+<Expr5> -> +<Expr5> | -<Expr5> | <Expr6>
+<Expr6> -> (<Expression>) | <id> | <const>
+

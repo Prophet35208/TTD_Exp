@@ -1,0 +1,12 @@
+# TEST 19: Ошибка: использование else запрещено
+
+>>> EXPRESSION
+int main() {
+    if (a > b)
+        x = 1;
+    else
+        x = 2;
+}
+
+<<< OUTPUT
+1

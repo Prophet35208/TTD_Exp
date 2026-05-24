@@ -1,0 +1,9 @@
+# TEST 22: Ошибка: отсутствует операнд
+
+>>> EXPRESSION
+int main() {
+    x = a + ;
+}
+
+<<< OUTPUT
+1

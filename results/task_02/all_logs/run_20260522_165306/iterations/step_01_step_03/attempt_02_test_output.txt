@@ -1,0 +1,55 @@
+STDOUT:
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.3, pluggy-1.6.0 -- d:\TTD_Exp\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Daniil\AppData\Local\Temp\tmprmswgzel
+plugins: anyio-4.13.0
+collecting ... collected 35 items
+
+all.py::test_tokenize_keywords PASSED                                    [  2%]
+all.py::test_tokenize_identifiers PASSED                                 [  5%]
+all.py::test_tokenize_integer_constants PASSED                           [  8%]
+all.py::test_tokenize_float_constants PASSED                             [ 11%]
+all.py::test_tokenize_operators PASSED                                   [ 14%]
+all.py::test_tokenize_braces_and_parens PASSED                           [ 17%]
+all.py::test_tokenize_simple_declaration PASSED                          [ 20%]
+all.py::test_tokenize_comment_ignored PASSED                             [ 22%]
+all.py::test_tokenize_comment_at_end PASSED                              [ 25%]
+all.py::test_tokenize_eof PASSED                                         [ 28%]
+all.py::test_tokenize_line_and_col PASSED                                [ 31%]
+all.py::test_rules_format PASSED                                         [ 34%]
+all.py::test_first_terminal PASSED                                       [ 37%]
+all.py::test_first_nonterminal PASSED                                    [ 40%]
+all.py::test_first_epsilon PASSED                                        [ 42%]
+all.py::test_first_combined PASSED                                       [ 45%]
+all.py::test_follow_start_symbol PASSED                                  [ 48%]
+all.py::test_follow_after_terminal PASSED                                [ 51%]
+all.py::test_follow_transitive PASSED                                    [ 54%]
+all.py::test_follow_end_of_rule PASSED                                   [ 57%]
+all.py::test_first_follow_full_grammar PASSED                            [ 60%]
+all.py::test_parsing_table_no_conflicts PASSED                           [ 62%]
+all.py::test_parse_empty_main PASSED                                     [ 65%]
+all.py::test_parse_simple_declaration PASSED                             [ 68%]
+all.py::test_parse_declaration_without_init PASSED                       [ 71%]
+all.py::test_parse_multiple_declarations PASSED                          [ 74%]
+all.py::test_parse_assignment FAILED                                     [ 77%]
+all.py::test_parse_empty_statement PASSED                                [ 80%]
+all.py::test_parse_missing_semicolon PASSED                              [ 82%]
+all.py::test_parse_invalid_type PASSED                                   [ 85%]
+all.py::test_parse_missing_closing_brace PASSED                          [ 88%]
+all.py::test_full_rules_structure PASSED                                 [ 91%]
+all.py::test_full_terminals_match_token_types PASSED                     [ 94%]
+all.py::test_full_nonterminals_contain_required PASSED                   [ 97%]
+all.py::test_full_terminals_exact_match PASSED                           [100%]
+
+================================== FAILURES ===================================
+____________________________ test_parse_assignment ____________________________
+all.py:249: in test_parse_assignment
+    assert result == 0
+E   assert 1 == 0
+=========================== short test summary info ===========================
+FAILED all.py::test_parse_assignment - assert 1 == 0
+======================== 1 failed, 34 passed in 0.27s =========================
+
+
+STDERR:

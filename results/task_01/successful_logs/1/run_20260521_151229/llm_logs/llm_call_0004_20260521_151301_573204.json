@@ -1,0 +1,22 @@
+{
+  "call_number": 4,
+  "timestamp": "20260521_151301_573204",
+  "model": "deepseek/deepseek-v4-pro",
+  "temperature": 0.0,
+  "messages": [
+    {
+      "role": "system",
+      "content": "Ты — разработчик в режиме строгого Test-Driven Development.\n\nТвоя задача: получая тесты и текущий код, генерировать новый код solution.py, который проходит все тесты — и новые, и старые.\n\nПравила:\n- Отвечай только кодом на Python. Без markdown-разметки, без пояснений, без \\`\\`\\`python.\n- Если файл solution.py пуст, напиши код с нуля.\n- Текущий код solution.py, если не пустой, уже содержит реализацию предыдущих шагов TDD. Не ломай то, что уже работает.\n- Изменения должны быть минимальными и направленными только на прохождение новых тестов.\n- Не добавляй функциональность, не требуемую тестами.\n- Не изменяй тесты.\n- Если все тесты уже проходят, верни текущий код без изменений.\n\nТы получаешь полную историю диалога, включая все предыдущие попытки, если такие были. Используй этот контекст, чтобы делать верный вывод или не повторять ошибок."
+    },
+    {
+      "role": "user",
+      "content": "Код solution.py проходит все тесты. Проведи рефакторинг для улучшения качества.\n\nТекущий код:\n\ndef calculate(expression):\n    tokens = expression.split()\n    if len(tokens) == 1:\n        return int(tokens[0])\n    \n    a = int(tokens[0])\n    b = int(tokens[1])\n    op = tokens[2]\n    \n    if op == '+':\n        return a + b\n    elif op == '-':\n        return a - b\n    elif op == '*':\n        return a * b\n    elif op == '/':\n        if b == 0:\n            return None\n        return a // b\n    elif op == '%':\n        if b == 0:\n            return None\n        return a % b\n    elif op == '^':\n        if a == 0 and b <= 0:\n            return None\n        return a ** b\n\nПравила рефакторинга:\n- Не меняй поведение — все тесты должны продолжать проходить.\n- Улучшай: читаемость, устранение дублирования, упрощение логики, понятные имена переменных.\n- Можно менять структуру кода (извлекать функции, переименовывать переменные, объединять условия).\n- Напиши полный, новый код файла solution.py с улучшениями.\n\nОтвечай ТОЛЬКО кодом на Python, без пояснений и markdown-разметки."
+    }
+  ],
+  "response": "def _parse_tokens(tokens):\n    if len(tokens) == 1:\n        return int(tokens[0]), None, None\n    return int(tokens[0]), int(tokens[1]), tokens[2]\n\ndef _is_invalid_power(base, exponent):\n    return base == 0 and exponent <= 0\n\ndef _is_division_by_zero(operator, second_operand):\n    return operator in ('/', '%') and second_operand == 0\n\ndef _apply_operator(first, second, operator):\n    operations = {\n        '+': lambda a, b: a + b,\n        '-': lambda a, b: a - b,\n        '*': lambda a, b: a * b,\n        '/': lambda a, b: a // b,\n        '%': lambda a, b: a % b,\n        '^': lambda a, b: a ** b,\n    }\n    return operations[operator](first, second)\n\ndef calculate(expression):\n    tokens = expression.split()\n    first, second, operator = _parse_tokens(tokens)\n    \n    if operator is None:\n        return first\n    \n    if _is_division_by_zero(operator, second):\n        return None\n    \n    if operator == '^' and _is_invalid_power(first, second):\n        return None\n    \n    return _apply_operator(first, second, operator)",
+  "usage": {
+    "prompt_tokens": 570,
+    "completion_tokens": 290,
+    "total_tokens": 860
+  }
+}

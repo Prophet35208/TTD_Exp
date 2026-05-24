@@ -1,0 +1,9 @@
+# TEST 2: Пустой оператор внутри блока
+
+>>> EXPRESSION
+int main() {
+    ;
+}
+
+<<< OUTPUT
+0

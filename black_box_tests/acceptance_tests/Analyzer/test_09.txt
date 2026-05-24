@@ -1,0 +1,12 @@
+# TEST 9: If с составным оператором
+
+>>> EXPRESSION
+int main() {
+    if (a <= b) {
+        x = 1;
+        y = 2;
+    }
+}
+
+<<< OUTPUT
+0

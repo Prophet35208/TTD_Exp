@@ -1,0 +1,9 @@
+# TEST 7: Сложное выражение со скобками
+
+>>> EXPRESSION
+int main() {
+    x = (a + b) * (c - d);
+}
+
+<<< OUTPUT
+0
